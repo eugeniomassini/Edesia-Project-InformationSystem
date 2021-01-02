@@ -19,6 +19,7 @@ class User (db.Model):
     def __repr__(self):
         return "<User %r>" % self.name
 
+
 class Role (db.Model):
     id = db.Column(db.Integer, primary_key=True)  # Auto-incrementing
     name = db.Column(db.String(20), nullable=False)

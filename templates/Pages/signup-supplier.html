@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- Bootstrap core CSS -->
+  <link href="{{ url_for('static',filename='css/bootstrap.min.css') }}" rel="stylesheet">
+</head>
+<body>
+<!-- Simple Header for the page -->
+<div class="row justify-content-md-center">
+    <h1>Join Edesia!</h1>
+</div>
+
+<div class="container-fluid">
+    <form method="post">
+        <div class="col-md-9 m-auto">
+             <div class="form-group">
+              {{ registerForm.name.label }}
+                {{ registerForm.name(class='form-control') }}
+                {% for error in registerForm.name.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endfor  %}
+                <p class="help-block"></p>
+            </div>
+
+            <div class="form-group">
+              {{ registerForm.email.label }}
+                {{ registerForm.email(class='form-control') }}
+                {% for error in registerForm.email.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endfor  %}
+                <p class="help-block"></p>
+            </div>
+
+            <div class="form-group">
+              {{ registerForm.password.label }}
+                {{ registerForm.password(class='form-control') }}
+                {% for error in registerForm.password.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endfor  %}
+                <p class="help-block"></p>
+            </div>
+
+            <div class="form-group">
+              {{ registerForm.piva.label }}
+                {{ registerForm.piva(class='form-control') }}
+                {% for error in registerForm.piva.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endfor  %}
+                <p class="help-block"></p>
+            </div>
+
+            <div class="form-group">
+              {{ registerForm.address.label }}
+                {{ registerForm.address(class='form-control') }}
+                {% for error in registerForm.address.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endfor  %}
+                <p class="help-block"></p>
+            </div>
+
+            <div class="form-group">
+              {{ registerForm.phone.label }}
+                {{ registerForm.phone(class='form-control') }}
+                {% for error in registerForm.phone.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endfor  %}
+            </div>
+
+            <div class="form-group">
+              {{ registerForm.description.label }}
+                {{ registerForm.description(class='form-control') }}
+                {% for error in registerForm.description.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endfor  %}
+            </div>
+        <div id="success"></div>
+          <!-- For success/fail messages -->
+        {{ registerForm.submit(class='btn btn-primary') }}
+            {{ registerForm.hidden_tag() }}
+        </div>
+    </form>
+</div>
+</body>
+</html>

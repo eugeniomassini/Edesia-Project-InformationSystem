@@ -62,6 +62,24 @@ def homepage():
     return render_template("Pages/homepage.html", title="Homepage - Edesia")
 
 
+# session login
+def login():
+    login_form = loginForm()
+    if login_form.validate_on_submit():
+        user_info = User.query.filter_by(email=login_form.email.data).first()
+        if user_info and bcrypt.check_password_hash(user_info.password, login_form.password.data):
+            session['user_id'] = user_info.id
+            session['name'] = user_info.name
+            session['email'] = user_info.email
+            session['role_id'] = user_info.role_id
+
+            if session['role_id'] == '2':
+                return redirect(url_for('consumer'))
+
+            elif session['role_id'] == '1':
+                return redirect(url_for('supplier'))
+
+
 # Consumer and Supplier registration
 @app.route('/registration/<roleid>', methods=['POST', 'GET'])
 def registration(roleid):
@@ -98,7 +116,7 @@ def registration(roleid):
                       password=registerForm.password.data)
 
             return redirect(url_for('login'))
-        return render_template('Pages/reg_consumer.html', registerForm=registerForm, name=name)
+        return render_template('Pages/signup-consumer.html', registerForm=registerForm, name=name)
 
     elif roleid == '1':
         name = None
@@ -134,25 +152,9 @@ def registration(roleid):
                            password=registerForm.password.data)
 
             return redirect(url_for('login'))
-        return render_template('Pages/reg_supplier.html', registerForm=registerForm, name=name)
+        return render_template('Pages/signup-supplier.html', registerForm=registerForm, name=name)
 
 
-# session login
-def login():
-    login_form = loginForm()
-    if login_form.validate_on_submit():
-        user_info = User.query.filter_by(email=login_form.email.data).first()
-        if user_info and bcrypt.check_password_hash(user_info.password, login_form.password.data):
-            session['user_id'] = user_info.id
-            session['name'] = user_info.name
-            session['email'] = user_info.email
-            session['role_id'] = user_info.role_id
-
-            if session['role_id'] == '2':
-                return redirect(url_for('consumer'))
-
-            elif session['role_id'] == '1':
-                return redirect(url_for('supplier'))
 
 
 
