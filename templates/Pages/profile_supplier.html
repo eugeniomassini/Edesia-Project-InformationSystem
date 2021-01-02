@@ -1,0 +1,32 @@
+{% extends 'Components/base.html' %}
+
+{% block body %}
+
+    <div class="container-lg min-vh-100">
+        <div class="row mt-5 mb-5">
+            <div class="col-md-4">
+                <div class="card m-auto rounded-3 border-2" id="cardProfileConsumer">
+                    <img src="/static/images/avatar.png" class="card-img-top mt-3 mb-3 m-auto" style="width: 50%">
+                    <div class="card-body m-3">
+                        <h5 class="card-title">Name Surname</h5>
+                        <p class="card-text">email</p>
+                        <p class="card-text">address</p>
+                        <p class="card-text">phone number</p>
+
+                    </div>
+                    <div class="list-group list-group-flush m-3">
+                        <a class="list-group-item list-group-item-action" href="#">Dashboard</a>
+                        <a class="list-group-item list-group-item-action" href="#">Orders</a>
+                        <a class="list-group-item list-group-item-action" href="#">Product</a>
+
+                    </div>
+
+                    <div class="card-body m-3">
+                        <button class="btn btn-primary">Edit Profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

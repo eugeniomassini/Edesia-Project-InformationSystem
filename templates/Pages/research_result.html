@@ -1,0 +1,39 @@
+<!-- Results of the Research page -->
+
+{% extends 'Components/base.html' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="container-lg text-center m-5">
+            <h1>TODO Here The Map</h1>
+        </div>
+
+        <div class="container-lg">
+            <div class="col-8 col-md m-auto">
+
+                <!-- Card to fill-->
+                <div class="card m-4 rounded-3 border-3" id="cardResult">
+                    <div class="row">
+                        <div class="col-4 col-md-4">
+                            <img src="/static/images/hp_first.png" class="card-img">
+                        </div>
+                        <div class="col-8 col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    Name of the farm
+                                </h5>
+                                <p class="card-text">Location</p>
+                                <p class="card-text">Description</p>
+                                <p class="card-text">Rating</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

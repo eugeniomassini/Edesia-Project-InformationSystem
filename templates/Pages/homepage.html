@@ -1,0 +1,55 @@
+{% extends 'Components/base.html' %}
+
+{% block body %}
+    <div class="container-lg">
+
+            <div class="container-fluid vh-100">
+                <div class="row h-50 align-middle">
+                    <div class="col-8 col-mdl m-auto">
+                        <section id="search">
+                            <h2>Meet Edesia</h2>
+                            <p>Find local producers in your area</p>
+                            <form method="get" id="research_form">
+                                <div class="input-group input-group-lg" id="searchBar">
+                                    <input type="text" class="form-control border-2" placeholder="Insert location">
+                                    <button class="btn" type=submit><i class="fas fa-search-location" style="color: white"></i></button>
+                                </div>
+                            </form>
+                        </section>
+                    </div>
+                </div>
+
+                <div class="row h-50 p-5 border-top border-bottom">
+                    <div class="col-8 col-md text-center">
+                        <h5>How Edesia works</h5>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row row-cols-md-2 mt-5">
+                <div class="col-md mb-5">
+                    <img src="/static/images/homepage/quality.jpg" class="img-fluid rounded-3">
+                </div>
+                <div class="col-md text-center align-middle m-auto p-3">
+                    <h5>Quality</h5>
+                </div>
+
+                <div class="col-md text-center align-middle m-auto p-3">
+                    <h5>Easiness</h5>
+                </div>
+                <div class="col-md mb-5">
+                    <img src="/static/images/homepage/supermarket.jpg" class="img-fluid rounded-3 mt-2">
+                </div>
+
+                <div class="col-md mb-5">
+                    <img src="/static/images/homepage/fairness.jpg" class="img-fluid rounded-3">
+                </div>
+                <div class="col-md text-center align-middle m-auto p-3">
+                    <h5>Fairness</h5>
+                </div>
+
+            </div>
+    </div>
+{% endblock %}

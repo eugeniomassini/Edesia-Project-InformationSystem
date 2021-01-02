@@ -1,0 +1,140 @@
+<!-- Basic structure for everypage-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+        <meta charset="UTF-8">
+        <meta name="descriprion" content="Edesia is new webapp that lets you connect with local farmers to improve the quality of your grocery shopping">
+        <meta name="author" content="Group 19 Information System A.Y. 2020/2021">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=1">
+        <meta name="keywords" content="Edesia, digital, ecommerce, flask, fresh, quality, food, season, seasonal, local, farmers, fair, sustainability, time saving, information system, polito">
+        <!-- Import everything I may need -->
+        <!-- Icon -->
+        <script src="https://kit.fontawesome.com/a1e15561a1.js"></script>
+        <!-- Custom CSS -->
+        <link href="/static/personal.css" rel="stylesheet">
+        <!-- Bootstrap CSS 5.0.0 beta -->
+        <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">-->
+        <link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+        <!-- TODO decide/check if is better to define titles in the page or pass them from the render-->
+        <title>{% block title%}{{ title }}{% endblock %}</title>
+    {% endblock %}
+</head>
+<body>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
+
+<!-- Navbar here cos is common to all pages -->
+<!-- TODO add link in href for pages -->
+<!-- TODO collapse Menu -->
+
+{% block navbar %}
+
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-lg">
+            <a class="navbar-brand" href="{{ url_for('homepage') }}">
+                <img src="/static/images/logo_no_slogan.png" class="img-fluid ratio-21x9" width="200">
+            </a>
+            <div class="navbar-nav fs-5" id="navbarItem">
+                <a class="nav-link"  href="{{ url_for('homepage') }}">Home</a>
+                <a class="nav-link" href="#">About Us</a>
+                <a class="nav-link" href="#">Contact Us</a>
+                <a class="nav-link" data-bs-toggle="modal" href="#myModal">Login</a>
+                <!-- TODO make these appear only when logged -->
+                <a class="nav-link" href="#">Logout</a>
+                <a class="nav-link" href="#">Cart</a>
+            </div>
+        </div>
+
+            <!-- Modal HTML -->
+        <div id="myModal" class="modal fade">
+            <div class="modal-dialog modal-login">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Member Login</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/examples/actions/confirmation.php" method="post">
+                            <div class="form-group">
+                                <i class="fa fa-user"></i>
+                                <input type="text" class="form-control" placeholder="Username" required="required">
+                            </div>
+                            <div class="form-group">
+                                <i class="fa fa-lock"></i>
+                                <input type="password" class="form-control" placeholder="Password" required="required">
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-primary btn-block btn-lg" value="Login">
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#">Forgot Password?</a>
+                    </div>
+
+                    <div class="modal-body" style="margin: auto">
+                        <a class="btn btn-primary btn-block btn-lg" href="{{ url_for('registration', type_user='consumer', _external=True) }}">Register Consumer</a>
+                    </div>
+
+                     <div class="modal-body" style="margin: auto">
+                        <a class="btn btn-primary btn-block btn-lg" href="{{ url_for('registration', type_user='supplier', _external=True) }}">Register Supplier</a>
+                    </div>
+
+                </div>
+            </div>
+    </div>
+
+    </nav>
+
+{% endblock %}
+
+{% block body %}
+
+{% endblock %}
+
+<!-- TODO finish footer -->
+<!-- Footer common to all pages-->
+{% block footer %}
+
+    <div class="container-fluid" style="background-color: #C5DDA0">
+        <div class="container-lg" id="footer">
+            <div class="row row-cols-md-4 p-3">
+                <div class="col-md pb-1 m-auto navbar-light">
+                    <h5>Services</h5>
+                    <ul class="list-unstyled">
+                        <li><a>Register as consumer</a></li>
+                        <li><a >Are you a farmer? Register here</a></li>
+                        <li><a href="#search">Go Shopping</a></li>
+                    </ul>
+                </div>
+                 <div class="col-md pb-1 m-auto">
+                    <h5>Contact Us</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="mailto:help@edesia.it">help@edesia.it</a></li>
+                        <li><a >Help & Assistence</a></li>
+                        <li><a href="{{ url_for('about_us') }}">About Us</a></li>
+                    </ul>
+                </div>
+                 <div class="col-md pb-1 m-auto">
+                     <h5>Follow Us</h5>
+                     <ul class="list-unstyled">
+                         <li><i class="fab fa-instagram pe-1"></i>Instagram</li>
+                         <li><i class="fab fa-facebook-square pe-1"></i>Facebook</li>
+                         <li><i class="fab fa-twitter-square pe-1"></i>Twitter</li>
+                     </ul>
+                </div>
+                 <div class="col-md pb-1">
+                     <h5>Coming soon</h5>
+                     <img src="/static/images/homepage/coming_soon_apple.svg" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+</body>
+</html>

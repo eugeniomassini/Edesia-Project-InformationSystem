@@ -1,0 +1,85 @@
+{% extends 'Components/base.html' %}
+
+{% block body %}
+
+    <div class="container-lg">
+
+        <div class="row row-cols-lg-2">
+            <div class="col-lg">
+                <img src="/static/images/fahd-khan-mrFdBdTlElk-unsplash.jpg" class="img-fluid rounded-circle">
+            </div>
+            <div class="col-lg m-auto">
+                <div class="container-fluid">
+                    <h3>Company Name</h3>
+                    <p>Address</p>
+                    <p style="text-align: justify">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+                    <p>Rating</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-lg">
+        <div class="container-fluid m-5">
+            <h2 class="text-center">Box from the farmer</h2>
+        </div>
+
+        <div class="row row-cols-md-4">
+            <div class="col-md">
+                <div class="card mb-5">
+                    <img src="/static/images/box.png" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">Name Of the Box</h5>
+                        <p class="card-text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."</p>
+                        <p class="card-text fs-4">Price €</p>
+                        <a href="#" class="btn btn-primary">Add to Cart</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md">
+                <div class="card mb-5">
+                    <img src="/static/images/box.png" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">Name Of the Box</h5>
+                        <p class="card-text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."</p>
+                        <p class="card-text fs-4">Price €</p>
+                        <a href="#" class="btn btn-primary">Add to Cart</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="container-fluid m-5">
+            <h2 class="text-center">List of Product</h2>
+        </div>
+
+        <div class="table-responsive-lg">
+            <table class="table table-hover">
+                <thead class="table-light">
+                <tr>
+                    <th scope="col">Name of the product</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Add to cart</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Basic Row to iterate -->
+                    <tr>
+                        <td scope="row">Tomatoes</td>
+                        <td><div class="input-group"><input type="text" class="form-control" placeholder="Insert quantity"><span class="input-group-text">Kg</span> </div> </td>
+                        <td><a class="btn btn-primary">Add to cart</a> </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="container-fluid m-5">
+            <h2 class="text-center">Reviews</h2>
+        </div>
+
+    </div>
+
+
+{% endblock %}
