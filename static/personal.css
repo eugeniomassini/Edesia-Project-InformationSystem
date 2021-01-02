@@ -1,0 +1,20 @@
+.nav-link {
+    color: #0F7619;
+}
+
+#navbarItem a:hover{
+    color: #78AE27;
+}
+
+#footer a{
+    text-decoration: none;
+    color: black;
+}
+
+#searchBar input, #cardResult, #cardProfileConsumer{
+    border-color: #0F7619;;
+}
+
+#searchBar .btn{
+    background-color: #0F7619;
+}
