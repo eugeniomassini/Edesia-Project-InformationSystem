@@ -19,13 +19,17 @@
 
         <!-- TODO decide/check if is better to define titles in the page or pass them from the render-->
         <title>{% block title%}{{ title }}{% endblock %}</title>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCagpwfjdi0P8gK-Y4mVhz7MpDE6iVChcQ&callback=initAutocomplete&libraries=places&v=weekly"
+      defer
+    ></script>
     {% endblock %}
 </head>
 <body>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
-
 <!-- Navbar here cos is common to all pages -->
 <!-- TODO add link in href for pages -->
 <!-- TODO collapse Menu -->
@@ -41,7 +45,9 @@
                 <a class="nav-link"  href="{{ url_for('homepage') }}">Home</a>
                 <a class="nav-link" href="#">About Us</a>
                 <a class="nav-link" href="#">Contact Us</a>
+
                 <a class="nav-link" data-bs-toggle="modal" href="#myModal">Login</a>
+
                 <!-- TODO make these appear only when logged -->
                 <a class="nav-link" href="#">Logout</a>
                 <a class="nav-link" href="#">Cart</a>
@@ -91,7 +97,42 @@
     </nav>
 
 {% endblock %}
+<script>
+        let placeSearch;
+        let autocomplete;
 
+        function initAutocomplete() {
+        // Create the autocomplete object, restricting the search predictions to
+        // geographical location types.
+        autocomplete = new google.maps.places.Autocomplete(
+          document.getElementById("autocomplete"),
+          { types: ["geocode"] }
+        );
+        // Avoid paying for data that you don't need by restricting the set of
+        // place fields that are returned to just the address components.
+        autocomplete.setFields(["address_component"]);
+        // When the user selects an address from the drop-down, populate the
+        // address fields in the form.
+      }
+
+      // Bias the autocomplete object to the user's geographical location,
+      // as supplied by the browser's 'navigator.geolocation' object.
+      function geolocate() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition((position) => {
+            const geolocation = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
+            const circle = new google.maps.Circle({
+              center: geolocation,
+              radius: position.coords.accuracy,
+            });
+            autocomplete.setBounds(circle.getBounds());
+          });
+        }
+      }
+    </script>
 {% block body %}
 
 {% endblock %}

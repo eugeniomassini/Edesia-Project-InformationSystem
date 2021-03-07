@@ -11,7 +11,7 @@
                             <p>Find local producers in your area</p>
                             <form method="get" id="research_form">
                                 <div class="input-group input-group-lg" id="searchBar">
-                                    <input type="text" class="form-control border-2" placeholder="Insert location">
+                                    <input type="text" class="form-control border-2" placeholder="Insert location" id="autocomplete" onfocus="geolocate()">
                                     <button class="btn" type=submit><i class="fas fa-search-location" style="color: white"></i></button>
                                 </div>
                             </form>

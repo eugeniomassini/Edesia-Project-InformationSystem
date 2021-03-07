@@ -1,0 +1,60 @@
+{% extends 'Components/base.html' %}
+
+{% block body %}
+
+    <div class="container-lg mt-5">
+        <div class="container text-center">
+            <img src="/static/images/favicon.png" class="img-fluid ratio-1x1 align-middle" width="100">
+            <h3>Welcome to Edesia</h3>
+        </div>
+        <div class="col-8 col-md m-auto">
+            <form method="post">
+                <div class="form-group">
+                    {{ registrationForm.name.label }}
+                    {{ registrationForm.name(class='form-control') }}
+                    {% for error in registrationForm.name.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            <div class="form-group">
+                    {{ registrationForm.surname.label }}
+                    {{ registrationForm.surname(class='form-control') }}
+                    {% for error in registrationForm.surname.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            <div class="form-group">
+                    {{ registrationForm.email.label }}
+                    {{ registrationForm.email(class='form-control') }}
+                    {% for error in registrationForm.email.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            <div class="form-group">
+                    {{ registrationForm.password.label }}
+                    {{ registrationForm.password(class='form-control') }}
+                    {% for error in registrationForm.password.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            <div class="form-group">
+                    {{ registrationForm.address.label }}
+                    {{ registrationForm.address(class='form-control', id='autocomplete', onfocus='geolocate()') }}
+                    {% for error in registrationForm.address.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            <div class="form-group">
+                    {{ registrationForm.phone.label }}
+                    {{ registrationForm.phone(class='form-control') }}
+                    {% for error in registrationForm.phone.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {{ registrationForm.submit(class='btn btn-primary') }}
+                {{ registrationForm.hidden_tag() }}
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
