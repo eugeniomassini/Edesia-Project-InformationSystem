@@ -53,6 +53,11 @@ def registration(type_user):
     elif type_user == "supplier":
         return render_template("Pages/reg_supplier.html")
 
+@app.route('/login')
+def login():
+    return render_template('Pages/login.html')
+
+
 @app.route('/consumer')
 def consumer():
     return render_template('Pages/profile_consumer.html')

@@ -1,0 +1,37 @@
+{% extends 'Components/base.html' %}
+
+{% block body %}
+
+    <div class="container-lg vh-100">
+        <div class="row row-cols-lg-2">
+            <!-- text for login -->
+            <div class="col m-auto">
+                <h1>Enter in Edesia!</h1>
+                <p>Your new portal to buy groceries</p>
+
+            </div>
+            <!-- login form -->
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                       <h2 class="card-title">
+                           Login
+                       </h2>
+                        <form>
+
+                            <label>Username: </label>
+                            <input class="form-control m-3" type="email" placeholder="Enter your username">
+                            <label>Password: </label>
+                            <input class="form-control m-3" type="password" placeholder="Password">
+
+                            <button class="btn btn-primary" type="submit">Login</button>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
