@@ -1,0 +1,41 @@
+{% extends 'Components/base.html' %}
+
+{% block body %}
+
+    <div class="container-lg">
+        <div class="row row-cols-lg-2 mb-5 mt-5">
+            <div class="col m-auto">
+                <h2>Contact our Assistence</h2>
+                <p>If you are expeperiencing any issue with Edesia please contat us and we will get in touch with you as soon as possible</p>
+            </div>
+            <div class="col m-auto">
+                <form>
+                    <div class="row">
+                        <div class="col">
+                            <label>Name</label>
+                            <input class="form-control" type="text">
+                        </div>
+                        <div class="col">
+                            <label>Surname</label>
+                            <input class="form-control" type="text">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <label>Mail</label>
+                        <input class="form-control" type="email">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox">
+                            <label class="form-check-label">Farmer</label>
+                        </div>
+                    </div>
+                    <label>Message:</label>
+                    <textarea class="form-control" style="height: 100px"></textarea>
+
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -66,9 +66,15 @@ def consumer():
 def farmer():
     return render_template('Pages/profile_supplier.html')
 
-@app.route('/aboutUs')
+@app.route('/about-us')
 def about_us():
-    return render_template("Pages/aboutUs.html", title="About Us - Edesia")
+    return render_template("Pages/about-us.html", title="About Us - Edesia")
+
+@app.route('/contact-us')
+def contact_us():
+    return render_template("Pages/contact-us.html", title="Contact Us - Edesia")
+
+
 
 @app.route('/test')
 def test():
