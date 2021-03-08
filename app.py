@@ -62,9 +62,13 @@ def login():
 def consumer():
     return render_template('Pages/profile_consumer.html')
 
-@app.route('/farmer')
-def farmer():
-    return render_template('Pages/profile_supplier.html')
+@app.route('/farmer/orders')
+def farmer_orders():
+    return render_template('Pages/profile_supplier-orders.html')
+
+@app.route('/farmer/products')
+def farmer_products():
+    return render_template('Pages/profile_supplier-products.html')
 
 @app.route('/about-us')
 def about_us():
@@ -73,8 +77,6 @@ def about_us():
 @app.route('/contact-us')
 def contact_us():
     return render_template("Pages/contact-us.html", title="Contact Us - Edesia")
-
-
 
 @app.route('/test')
 def test():
