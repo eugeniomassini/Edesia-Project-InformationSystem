@@ -27,10 +27,29 @@ def setup_db():
 def map():
     return render_template('Pages/map.html')
 
+
+# Progam starts here
+
+# 1 - Basic Pages
+
+# Homepagage routing
+# TODO google maps search bar
 @app.route('/')
 @app.route('/homepage')
 def homepage():
     return render_template("Pages/homepage.html", title="Homepage - Edesia")
+
+# About Us routing
+@app.route('/about-us')
+def about_us():
+    return render_template("Pages/about-us.html", title="About Us - Edesia")
+
+#Contact Us routing
+@app.route('/contact-us')
+def contact_us():
+    return render_template("Pages/contact-us.html", title="Contact Us - Edesia")
+
+# 2 - Functions
 
 @app.route('/registration/<type_user>', methods=['GET', 'POST'])
 def registration(type_user):
@@ -70,14 +89,6 @@ def farmer_orders():
 def farmer_products():
     return render_template('Pages/profile_supplier-products.html')
 
-@app.route('/about-us')
-def about_us():
-    return render_template("Pages/about-us.html", title="About Us - Edesia")
-
-@app.route('/contact-us')
-def contact_us():
-    return render_template("Pages/contact-us.html", title="Contact Us - Edesia")
-
 @app.route('/test')
 def test():
     return render_template("Components/test.html")
@@ -91,4 +102,4 @@ def farmer_store():
     return render_template("Pages/farmer_store.html")
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
