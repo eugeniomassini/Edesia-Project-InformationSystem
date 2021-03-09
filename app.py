@@ -32,6 +32,16 @@ def map():
 
 # 1 - Basic Pages
 
+# Error Page 404
+@app.errorhandler(404)
+def page_not_foud(e):
+    return render_template('error/404.html')
+
+# Error Page 500
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('error/500.html')
+
 # Homepagage routing
 # TODO google maps search bar
 @app.route('/')
