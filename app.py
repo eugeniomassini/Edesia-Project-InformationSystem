@@ -16,8 +16,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # recommendation from pych
 app.config['MAIL_SERVER'] = 'smtp.mail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_TLS'] = True
-# app.config['MAIL_USERNAME'] = os.environ['EMAIL_USERNAME']
-# app.config['MAIL_PASSWORD'] = os.environ['EMAIL_PASSWORD']
+app.config['MAIL_USERNAME'] = os.environ['MAIL_USERNAME']
+app.config['MAIL_PASSWORD'] = os.environ['MAIL_PASSWORD']
 
 # Objects used
 db = SQLAlchemy(app)  # database object
@@ -43,9 +43,61 @@ def setup_db():
     db.session.add_all([role_supplier, role_consumer, role_admin])
     db.session.commit()
 
+# Following lines only to pre-insert some users in the database without filling the form each time
+    password1 = bcrypt.generate_password_hash('12345678').encode('utf-8')
+    user_info = User(name='Fruit & Vegetables',
+                     email='s289100@studenti.polito.it',
+                     password=password1,
+                     roleid=1)
+    db.session.add(user_info)
+    db.session.commit()
+    user_info = User.query.filter_by(email='s289100@studenti.polito.it').first()
+    session['user_id'] = user_info.id
+    new_supplier = Supplier(id=user_info.id,
+                            supplier_name='Fruit & Vegetables',
+                            supplier_address='Torino',
+                            supplier_phone='0123456789',
+                            piva='000000',
+                            description='Local & Fresh Food')
+    db.session.add(new_supplier)
+    db.session.commit()
+    password2 = bcrypt.generate_password_hash('12345678').encode('utf-8')
+    user_info = User(name='Organic Food',
+                     email='s222585@studenti.polito.it',
+                     password=password2,
+                     roleid=1)
+    db.session.add(user_info)
+    db.session.commit()
+    user_info = User.query.filter_by(email='s222585@studenti.polito.it').first()
+    session['user_id'] = user_info.id
+    new_supplier = Supplier(id=user_info.id,
+                            supplier_name='Organic Food',
+                            supplier_address='Milano',
+                            supplier_phone='1234567890',
+                            piva='222222',
+                            description='Local & Fresh Vegetables')
+    db.session.add(new_supplier)
+    db.session.commit()
+    password3 = bcrypt.generate_password_hash('12345678').encode('utf-8')
+    new_user = User(name='Elisa',
+                    email='elisa.vassallo.24@gmail.com',
+                    password=password3,
+                    roleid=2)
+    db.session.add(new_user)
+    db.session.commit()
+    user_info = User.query.filter_by(email='elisa.vassallo.24@gmail.com').first()
+    session['user_id'] = user_info.id
+    new_consumer = Consumer(id=user_info.id,
+                            consumer_name='Elisa',
+                            consumer_surname='Vassallo',
+                            consumer_address='Torino',
+                            consumer_phone='0123456789')
+    db.session.add(new_consumer)
+    db.session.commit()
+# End of lines for pre-filling
 
 # Send mail for confirmation of the registration
-def send_mail(to, subject, template, **kwargs):
+def send_email(to, subject, template, **kwargs):
     msg = Message(subject,
                   recipients=[to],
                   sender=app.config['MAIL_USERNAME'])
@@ -59,10 +111,11 @@ def send_mail(to, subject, template, **kwargs):
 @app.route('/home')
 @app.route('/')
 def homepage():
-    return render_template("Pages/homepage.html", title="Homepage - Edesia")
+    return render_template('Pages/homepage.html', title="Homepage - Edesia")
 
 
 # session login
+@app.route('/login', methods=['POST', 'GET'])
 def login():
     login_form = loginForm()
     if login_form.validate_on_submit():
@@ -72,12 +125,16 @@ def login():
             session['name'] = user_info.name
             session['email'] = user_info.email
             session['role_id'] = user_info.role_id
+            return redirect('Pages/profile_consumer.html')  # to skip the role_id
 
-            if session['role_id'] == '2':
-                return redirect(url_for('consumer'))
+            '''if session['role_id'] == '2':
+                return redirect('Pages/profile_consumer.html')
 
             elif session['role_id'] == '1':
-                return redirect(url_for('supplier'))
+                return redirect('Pages/profile_supplier.html')'''
+
+    return render_template('Pages/login.html', login_form=login_form)
+
 
 
 # Consumer and Supplier registration
@@ -108,14 +165,13 @@ def registration(roleid):
             db.session.commit()
 
             # send welcome email
-            send_mail(registerForm.email.data,
-                      'You have registered successfully',
-                      'mail',
-                      name=registerForm.name.data,
-                      email=registerForm.email.data,
-                      password=registerForm.password.data)
-
-            return redirect(url_for('login'))
+            '''send_email(registerForm.email.data,
+                       'You have registered successfully',
+                       'mail',
+                       name=registerForm.name.data,
+                       email=registerForm.email.data,
+                       password=registerForm.password.data)
+            return redirect('Pages/homepage.html')'''
         return render_template('Pages/signup-consumer.html', registerForm=registerForm, name=name)
 
     elif roleid == '1':
@@ -144,7 +200,7 @@ def registration(roleid):
             db.session.commit()
 
             # send welcome email
-            send_mail(registerForm.email.data,
+            send_email(registerForm.email.data,
                            'You have registered successfully',
                            'mail',
                            name=registerForm.name.data,
@@ -158,9 +214,12 @@ def registration(roleid):
 
 
 
-@app.route('/consumer')
-def consumer():
-    return render_template('Pages/profile_consumer.html')
+@app.route('/consumer/<id>')
+def consumer(id):
+    user = User.query.filter_by(id=id).first
+    if user is None:
+        abort(404)
+    return render_template('Pages/profile_consumer.html', user=user)
 
 @app.route('/supplier')
 def supplier():

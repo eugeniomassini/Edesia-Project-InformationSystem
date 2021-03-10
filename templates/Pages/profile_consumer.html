@@ -9,10 +9,12 @@
                 <div class="card m-auto rounded-3 border-2" id="cardProfileConsumer">
                     <img src="/static/images/avatar.png" class="card-img-top mt-3 mb-3 m-auto" style="width: 50%">
                     <div class="card-body m-3">
-                        <h5 class="card-title">Name Surname</h5>
-                        <p class="card-text">email</p>
-                        <p class="card-text">address</p>
-                        <p class="card-text">phone number</p>
+                        <h5> {{ user.name }} </h5>
+                        <p>
+                            {{ user.email }}
+                            {{ user.address }}
+                            {{ user.phone }}
+                        </p>
                     </div>
                     <div class="card-body border-top m-3">
                         <button class="btn btn-primary">Edit Profile</button>

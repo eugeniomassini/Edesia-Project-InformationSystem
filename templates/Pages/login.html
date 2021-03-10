@@ -1,0 +1,57 @@
+{% extends 'Components/base.html' %}
+
+{% block body %}
+
+    <div class="container-lg vh-100">
+        <div class="row row-cols-lg-2">
+            <!-- text for login -->
+            <div class="col m-auto">
+                <h1>Enter in Edesia!</h1>
+                <p>Your new portal to buy groceries</p>
+
+            </div>
+            <!-- login form -->
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                       <h2 class="card-title">
+                           Login
+                       </h2>
+                        <form method="post" >
+           <div class="control-group form-group">
+            <div class="controls">
+                {{ login_form.email.label }}
+                 {{ login_form.email(class='form-control') }}
+
+              {% for error in login_form.email.errors %}
+                <div class="alert alert-danger" role="alert">
+
+                  {{ error }}
+                </div>
+                {% endfor  %}
+
+            </div>
+          </div>
+         <div class="control-group form-group">
+            <div class="controls">
+              {{ login_form.password.label }}
+                {{ login_form.password(class='form-control') }}
+                 {% for error in login_form.password.errors %}
+                <p class="alert alert-danger" role="alert">
+
+                  {{ error }}
+              </p>
+                {% endfor  %}
+
+            </div>
+         </div>
+                {{ login_form.submit(class='btn btn-primary') }}
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
