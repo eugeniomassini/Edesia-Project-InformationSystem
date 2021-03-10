@@ -39,7 +39,7 @@
                 </div>
             <div class="form-group">
                     {{ registrationForm.address.label }}
-                    {{ registrationForm.address(class='form-control', id='autocomplete', onfocus='geolocate()') }}
+                    {{ registrationForm.address(class='form-control')}}
                     {% for error in registrationForm.address.errors %}
                         <p>{{ error }}</p>
                     {% endfor %}

@@ -1,9 +1,8 @@
 # TODO import things I'll need
 from flask import Flask, render_template, session, redirect, url_for, abort
 from flask_sqlalchemy import SQLAlchemy
-from form import consumerSignup_Form
+from flask_login import LoginManager, login_user, login_required, current_user
 
-from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 import os
 from flask_mail import Mail, Message
@@ -17,18 +16,43 @@ app.config['SQLALCHEMY_COMMIT_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
-from model import User
+
+login_manager = LoginManager()
+login_manager.session_protection = 'strong'
+login_manager.login_view = 'login'
+login_manager.init_app(app)
+
+from model import *
+from form import *
+
 @app.before_first_request
 def setup_db():
     db.drop_all()
     db.create_all()
+# Adding the roles
+    role_supplier = Role(name='Supplier')
+    role_consumer = Role(name='Consumer')
+    role_admin = Role(name='Admin')
+    db.session.add_all([role_supplier, role_consumer, role_admin])
+    db.session.commit()
+# Adding a User
+    newuser = User(name='Eugenio',
+                email='pippo@gmail.com',
+                password='pippooooo',
+                roleid=2
+                )
+    db.session.add(newuser)
+    db.session.commit()
+    newconsumer = Consumer(id=1,
+                        consumer_name='Eugenio',
+                        consumer_surname='Massini',
+                        consumer_address='Paperopoli',
+                        consumer_phone='3331234567')
+    db.session.add(newconsumer)
+    db.session.commit()
 
-@app.route('/map')
-def map():
-    return render_template('Pages/map.html')
 
-
-# Progam starts here
+# Program starts here
 
 # 1 - Basic Pages
 
@@ -61,30 +85,53 @@ def contact_us():
 
 # 2 - Functions
 
+# Registration of the different Users
+# based on the name of the user redirect to a different page and form
+
 @app.route('/registration/<type_user>', methods=['GET', 'POST'])
 def registration(type_user):
+
+    if type_user == 'general':
+        return render_template('Pages/registration.html')
+
     if type_user == "consumer":
-        registrationForm = consumerSignup_Form()
-        print("sono arrivato qui 1")
+        registrationForm = ConsumerRegForm()
         if registrationForm.validate_on_submit():
-            print("sono arrivato qui2")
-            new_user = User(name=registrationForm.name.data,
-                            surname=registrationForm.surname.data,
-                            email=registrationForm.email.data,
-                            password_hash=registrationForm.password.data,
-                            address=registrationForm.address.data,
-                            phone_number=registrationForm.phone.data)
-            db.session.add(new_user)
+            user = User(name=registrationForm.name.data,
+                        email=registrationForm.email.data,
+                        password=registrationForm.password.data,
+                        roleid=2)
+            db.session.add(user)
+            db.session.commit()
+            id_user = User.query.filter_by(email=registrationForm.email.data).first()
+            consumer = Consumer(id=id_user.id,
+                               consumer_name=registrationForm.name.data,
+                               consumer_surname=registrationForm.surname.data,
+                               consumer_address=registrationForm.address.data,
+                               consumer_phone=registrationForm.phone.data)
+
+            db.session.add(consumer)
             db.session.commit()
             return redirect(url_for('homepage'))
-        return render_template("Pages/signup-consumer.html", registrationForm=registrationForm)
+        return render_template('Pages/signup-consumer.html', registrationForm=registrationForm)
 
-    elif type_user == "supplier":
-        return render_template("Pages/reg_supplier.html")
 
+# Login
+# Based on the type of user redirect to the right page
 @app.route('/login')
 def login():
-    return render_template('Pages/login.html')
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user is not None and user.verify_password(form.password.data):
+            login_user(user)
+            if user.roleid == 2:
+                return url_for('consumer')
+            elif user.roleid == 1:
+                return url_for('supplier')
+    return render_template('Pages/login.html', form=form)
+
+# Logout
 
 
 @app.route('/consumer')

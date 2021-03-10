@@ -17,15 +17,21 @@
                        <h2 class="card-title">
                            Login
                        </h2>
-                        <form>
+                        <form method="post">
+                            {{ form.email.label }}
+                            {{ form.email(class = 'form-control') }}
+                            {% for error in form.email.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
 
-                            <label>Username: </label>
-                            <input class="form-control m-3" type="email" placeholder="Enter your username">
-                            <label>Password: </label>
-                            <input class="form-control m-3" type="password" placeholder="Password">
+                            {{ form.password.label }}
+                            {{ form.password(class = 'form-control') }}
+                            {% for error in form.password.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
 
-                            <button class="btn btn-primary" type="submit">Login</button>
-
+                            {{ form.submit(class='btn btn-primary mt-3') }}
+                            {{ form.hidden_tag() }}
                         </form>
                     </div>
                 </div>

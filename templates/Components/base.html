@@ -44,57 +44,18 @@
             </a>
             <div class="navbar-nav fs-5" id="navbarItem">
                 <a class="nav-link"  href="{{ url_for('homepage') }}">Home</a>
-                <a class="nav-link" href="about-us">About Us</a>
-                <a class="nav-link" href="contact-us">Contact Us</a>
-
-                <a class="nav-link" data-bs-toggle="modal" href="#myModal">Login</a>
-
-                <!-- TODO make these appear only when logged -->
-                <a class="nav-link" href="#">Logout</a>
+                <a class="nav-link" href="{{ url_for('about_us') }}">About Us</a>
+                <a class="nav-link" href="{{ url_for('contact_us') }}">Contact Us</a>
+                <a class="nav-link" href="{{ url_for('registration', type_user='general') }}">Registration</a>
+                {% if current_user.is_authenticated %}
+                <a class="nav-link" href="{{ url_for('login') }}">Logout</a>
+                    <a class="nav-link" href="#">Logout</a>
                 <a class="nav-link" href="#">Cart</a>
+                {% else %}
+                <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                {% endif %}
             </div>
         </div>
-
-            <!-- Modal HTML -->
-        <div id="myModal" class="modal fade">
-            <div class="modal-dialog modal-login">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Member Login</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="/examples/actions/confirmation.php" method="post">
-                            <div class="form-group">
-                                <i class="fa fa-user"></i>
-                                <input type="text" class="form-control" placeholder="Username" required="required">
-                            </div>
-                            <div class="form-group">
-                                <i class="fa fa-lock"></i>
-                                <input type="password" class="form-control" placeholder="Password" required="required">
-                            </div>
-                            <div class="form-group">
-                                <input type="submit" class="btn btn-primary btn-block btn-lg" value="Login">
-                            </div>
-                        </form>
-
-                    </div>
-                    <div class="modal-footer">
-                        <a href="#">Forgot Password?</a>
-                    </div>
-
-                    <div class="modal-body" style="margin: auto">
-                        <a class="btn btn-primary btn-block btn-lg" href="{{ url_for('registration', type_user='consumer', _external=True) }}">Register Consumer</a>
-                    </div>
-
-                     <div class="modal-body" style="margin: auto">
-                        <a class="btn btn-primary btn-block btn-lg" href="{{ url_for('registration', type_user='supplier', _external=True) }}">Register Supplier</a>
-                    </div>
-
-                </div>
-            </div>
-    </div>
-
     </nav>
 
 {% endblock %}
