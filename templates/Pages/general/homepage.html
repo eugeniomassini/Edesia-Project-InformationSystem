@@ -1,5 +1,5 @@
 {% extends 'Components/base.html' %}
-
+<!-- placeholder="Insert location", id="autocomplete", onfocus="geolocate()") -->
 {% block body %}
     <div class="container-lg">
 
@@ -9,10 +9,16 @@
                         <section id="search">
                             <h2>Meet Edesia</h2>
                             <p>Find local producers in your area</p>
-                            <form method="get" id="research_form">
+                            <form method="post" id="research_form">
+
                                 <div class="input-group input-group-lg" id="searchBar">
-                                    <input type="text" class="form-control border-2" placeholder="Insert location" id="autocomplete" onfocus="geolocate()">
-                                    <button class="btn" type=submit><i class="fas fa-search-location" style="color: white"></i></button>
+                                    {{ form.city(class = 'form-control border-2')}}
+                                    {% for error in form.city.errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                    {{ form.submit(class='btn')}}
+                                    {{ form.hidden_tag() }}
+                                    <!--<button class="btn" type=submit><i class="fas fa-search-location" style="color: white"></i></button>-->
                                 </div>
                             </form>
                         </section>

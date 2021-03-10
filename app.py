@@ -70,9 +70,12 @@ def internal_server_error(e):
 # Homepagage routing
 # TODO google maps search bar
 @app.route('/')
-@app.route('/homepage')
+@app.route('/homepage', methods=['GET', 'POST'])
 def homepage():
-    return render_template("Pages/general/homepage.html", title="Homepage - Edesia")
+    researchForm = ResearchForm()
+    if researchForm.validate_on_submit():
+        return redirect(url_for('research', city=researchForm.city.data))
+    return render_template("Pages/general/homepage.html", title="Homepage - Edesia", form=researchForm)
 
 # About Us routing
 @app.route('/about-us')
@@ -84,7 +87,7 @@ def about_us():
 def contact_us():
     return render_template("Pages/general/contact-us.html", title="Contact Us - Edesia")
 
-# 2 - Functions
+# 2 - Functions Reg and Log
 
 # Registration of the different Users
 # based on the name of the user redirect to a different page and form
@@ -160,11 +163,15 @@ def logout():
     logout_user()
     return redirect(url_for('homepage'))
 
+# Consumer profile page
 @app.route('/consumer')
+@login_required
 def consumer():
     return render_template('Pages/profile_consumer.html')
 
+# Supplier page
 @app.route('/supplier')
+@login_required
 def supplier():
     return render_template('Pages/profile_supplier-orders.html')
 
@@ -176,12 +183,15 @@ def farmer_orders():
 def farmer_products():
     return render_template('Pages/profile_supplier-products.html')
 
+# Research
+
+
 @app.route('/test')
 def test():
     return render_template("Components/test.html")
 
-@app.route('/results')
-def research():
+@app.route('/research/<city>')
+def research(city):
     return render_template("Pages/research_result.html")
 
 @app.route('/farmer_store')
@@ -190,4 +200,4 @@ def farmer_store():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

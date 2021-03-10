@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import *
 from wtforms.validators import *
 from model import *
+from markupsafe import Markup
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -38,3 +39,7 @@ class SupplierRegForm(FlaskForm):
     def validate_email(self, email):
         if User.query.filter_by(email=email.data).first():
             raise ValidationError('This user has been register before or taken')
+
+class ResearchForm(FlaskForm):
+    city = StringField('City', validators=[DataRequired()])
+    submit = SubmitField('Search')
