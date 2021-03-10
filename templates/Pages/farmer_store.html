@@ -66,11 +66,13 @@
                 </thead>
                 <tbody>
                 <!-- Basic Row to iterate -->
-                    <tr>
-                        <td scope="row">Tomatoes</td>
+                {% for farmerproduct in farmerproducts %}
+                <tr>
+                        <td scope="row">{{ farmerproduct.description }}</td>
                         <td><div class="input-group"><input type="text" class="form-control" placeholder="Insert quantity"><span class="input-group-text">Kg</span> </div> </td>
                         <td><a class="btn btn-primary">Add to cart</a> </td>
                     </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>

@@ -13,6 +13,7 @@
             <div class="col-8 col-md m-auto">
 
                 <!-- Card to fill-->
+                {% for localsupplier in localsuppliers %}
                 <div class="card m-4 rounded-3 border-3" id="cardResult">
                     <div class="row">
                         <div class="col-4 col-md-4">
@@ -21,15 +22,17 @@
                         <div class="col-8 col-md-8">
                             <div class="card-body">
                                 <h5 class="card-title">
-                                    Name of the farm
+                                    {{ localsupplier.supplier_name }}
                                 </h5>
-                                <p class="card-text">Location</p>
-                                <p class="card-text">Description</p>
+                                <p class="card-text">{{ localsupplier.supplier_address }}</p>
+                                <p class="card-text">{{ localsupplier.description }}</p>
                                 <p class="card-text">Rating</p>
+                                <a class="btn btn-primary" href="farmer_store/{{ localsupplier.id }}">Go to farmer page</a>
                             </div>
                         </div>
                     </div>
                 </div>
+                {% endfor %}
 
 
             </div>

@@ -9,10 +9,24 @@
                         <section id="search">
                             <h2>Meet Edesia</h2>
                             <p>Find local producers in your area</p>
-                            <form method="get" id="research_form">
+                            <form method="post">
+        <div class="col-md-9 m-auto">
+            <div class="form-group">
+                 {{ research_form.city.label }}
+                    {{ research_form.city(class='form-control') }}
+                    {% for error in research_form.city.errors %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                    {% endfor  %}
+            </div>
+          <!-- For success/fail messages -->
+        {{ research_form.submit(class='btn btn-primary') }}
+            {{ research_form.hidden_tag() }}
+        </div>
+    </form>
+                            <form method="post" id="research_form">
                                 <div class="input-group input-group-lg" id="searchBar">
                                     <input type="text" class="form-control border-2" placeholder="Insert location">
-                                    <button class="btn" type=submit><i class="fas fa-search-location" style="color: white"></i></button>
+                                    <button class="btn" type="submit"><i class="fas fa-search-location" style="color: white"></i></button>
                                 </div>
                             </form>
                         </section>
