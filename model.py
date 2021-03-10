@@ -4,6 +4,8 @@ from app import db
 from flask_login import UserMixin
 from app import login_manager
 
+# Role class is used to store the roles assigned to the users on Edesia
+# Supplier 1, Consumer 2, Admin 3
 class Role (db.Model):
     id = db.Column(db.Integer, primary_key=True)  # Auto-incrementing
     name = db.Column(db.String(20), nullable=False)
@@ -13,11 +15,12 @@ class Role (db.Model):
         return "<Role %r>" % self.name
 
 
+# User class defines the general user, this table is intended to fasten the login
 class User (UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)  # Auto-incrementing
     email = db.Column(db.String(50), unique=True, nullable=False)
     name = db.Column(db.String(50), nullable=False)
-    password = db.Column(db.String(200), nullable=False)
+    password_hash = db.Column(db.String(200), nullable=False)
     roleid = db.Column(db.Integer, db.ForeignKey('role.id'))
     type = db.Column(db.String(30))
 
@@ -29,7 +32,8 @@ class User (UserMixin, db.Model):
     def __repr__(self):
         return "<User %r>" % self.name
 
-class Consumer (db.Model):
+# Consumer specific class with its own attributes
+class Consumer(db.Model):
     id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     consumer_name = db.Column(db.String(50), nullable=False)
     consumer_surname = db.Column(db.String(50), nullable=False)
@@ -40,6 +44,7 @@ class Consumer (db.Model):
         'polymorphic_identity': 'consumer',
     }
 
+# Supplier specific class with its own attributes
 class Supplier (db.Model):
     id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     supplier_name = db.Column(db.String(50), nullable=False)
@@ -52,6 +57,7 @@ class Supplier (db.Model):
         'polymorphic_identity': 'supplier',
     }
 
+# Required by Flask-Login to handle the logged user
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
