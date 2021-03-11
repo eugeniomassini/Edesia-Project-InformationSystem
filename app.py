@@ -15,8 +15,17 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///website.db'
 app.config['SQLALCHEMY_COMMIT_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# Email configuration
+app.config['MAIL_SERVER'] = 'smtp.mail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_TLS'] = True
+app.config['MAIL_USERNAME'] = os.environ['EMAIL_USERNAME']
+app.config['MAIL_PASSWORD'] = os.environ['EMAIL_PASSWORD']
+
+
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
+mail = Mail(app)
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
@@ -25,6 +34,13 @@ login_manager.init_app(app)
 
 from model import *
 from form import *
+
+def send_mail(to, subject, **kwargs):
+    msg=Message(subject,
+                sender=app.config['MAIL_USERNAME'],
+                recipients=[to])
+    msg.html = render_template('welcome-mail.html', **kwargs)
+    mail.send(msg)
 
 @app.before_first_request
 def setup_db():
@@ -133,6 +149,13 @@ def registration(type_user):
 
             db.session.add(consumer)
             db.session.commit()
+            # send email
+            send_mail(registrationForm.email.data,
+                      'You have registered successfully',
+                      name=registrationForm.name.data,
+                      username=registrationForm.email.data,
+                      password=registrationForm.password.data)
+
             return redirect(url_for('login'))
         return render_template('Pages/registration/signup-consumer.html', registrationForm=registrationForm)
 
@@ -154,6 +177,13 @@ def registration(type_user):
                                 description= registrationForm.description.data)
             db.session.add(supplier)
             db.session.commit()
+            # send email
+            send_mail(registrationForm.email.data,
+                      'You have registered successfully',
+                      'mail',
+                      name=registrationForm.name.data,
+                      username=registrationForm.email.data,
+                      password=registrationForm.password.data)
             return redirect(url_for('login'))
         return render_template('Pages/registration/signup-supplier.html', registrationForm=registrationForm)
 
