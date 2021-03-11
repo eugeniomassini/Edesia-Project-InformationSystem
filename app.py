@@ -133,7 +133,7 @@ def registration(type_user):
 
             db.session.add(consumer)
             db.session.commit()
-            return redirect(url_for('homepage'))
+            return redirect(url_for('login'))
         return render_template('Pages/registration/signup-consumer.html', registrationForm=registrationForm)
 
     if type_user == 'supplier':
@@ -154,7 +154,7 @@ def registration(type_user):
                                 description= registrationForm.description.data)
             db.session.add(supplier)
             db.session.commit()
-            return redirect(url_for('homepage'))
+            return redirect(url_for('login'))
         return render_template('Pages/registration/signup-supplier.html', registrationForm=registrationForm)
 
 
