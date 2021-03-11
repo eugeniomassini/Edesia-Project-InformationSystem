@@ -35,6 +35,7 @@ login_manager.init_app(app)
 from model import *
 from form import *
 
+# Mail Function
 def send_mail(to, subject, **kwargs):
     msg=Message(subject,
                 sender=app.config['MAIL_USERNAME'],
