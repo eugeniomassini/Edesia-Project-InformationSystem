@@ -1,7 +1,7 @@
 # TODO import things I'll need
 from flask import Flask, render_template, session, redirect, url_for, abort
 from flask_sqlalchemy import SQLAlchemy
-from form import consumerSignup_Form
+from form import consumerSignup_Form, login_Form
 
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
@@ -55,6 +55,11 @@ def registration(type_user):
 
 @app.route('/login')
 def login():
+    '''loginForm = login_Form()
+    if loginForm.validate_on_submit():
+        user_info = User.query.filter_by(id=loginForm.id.data).first()
+        if user_info and'''
+
     return render_template('Pages/login.html')
 
 
