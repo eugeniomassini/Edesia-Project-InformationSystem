@@ -60,9 +60,10 @@ class Product (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     supplier_id = db.Column(db.Integer, db.ForeignKey('supplier.id'))
     price = db.Column(db.Float, nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    quantity = db.Column(db.Integer)
-    certificate = db.Column(db.Boolean)
+    description = db.Column(db.Text)
+    name = db.Column(db.String, nullable=False)
+    quantity = db.Column(db.Float)
+    box = db.Column(db.Boolean)
 
 #class ShoppingCart (db.Model):
     #id = db.Column(db.Integer, primary_key=True)
