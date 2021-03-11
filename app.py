@@ -10,7 +10,7 @@ from flask_mail import Mail, Message
 app = Flask(__name__)
 
 # Database configuration
-app.config['SECRET_KEY'] = 'kncjdiejdsfmsdasldfjwqop'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///website.db'
 app.config['SQLALCHEMY_COMMIT_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -50,6 +50,23 @@ def setup_db():
                         consumer_address='Paperopoli',
                         consumer_phone='3331234567')
     db.session.add(newconsumer)
+    db.session.commit()
+    password1 = bcrypt.generate_password_hash('12345678').encode('utf-8')
+    user_info = User(name='Fruit & Vegetables',
+                     email='s289100@studenti.polito.it',
+                     password_hash=password1,
+                     roleid=1)
+    db.session.add(user_info)
+    db.session.commit()
+    user_info = User.query.filter_by(email='s289100@studenti.polito.it').first()
+    session['user_id'] = user_info.id
+    new_supplier = Supplier(id=user_info.id,
+                            supplier_name='Fruit & Vegetables',
+                            supplier_address='Torino',
+                            supplier_phone='0123456789',
+                            piva='000000',
+                            description='Local & Fresh Food')
+    db.session.add(new_supplier)
     db.session.commit()
 
 
@@ -183,20 +200,25 @@ def farmer_orders():
 def farmer_products():
     return render_template('Pages/profile_supplier-products.html')
 
+# 3 Ordering process
+# Research, Farmer store, place order
+
 # Research
+@app.route('/research/<city>')
+def research(city):
+    suppliers = Supplier.query.filter_by(supplier_address=city).all()
+    return render_template("Pages/research_result.html", suppliers=suppliers)
+
+# Farmer Store
+@app.route('/farmer_store/<int:id>')
+def farmer_store(id):
+
+    return render_template("Pages/farmer_store.html")
 
 
 @app.route('/test')
 def test():
     return render_template("Components/test.html")
-
-@app.route('/research/<city>')
-def research(city):
-    return render_template("Pages/research_result.html")
-
-@app.route('/farmer_store')
-def farmer_store():
-    return render_template("Pages/farmer_store.html")
 
 
 if __name__ == '__main__':
