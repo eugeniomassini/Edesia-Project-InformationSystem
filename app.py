@@ -16,8 +16,28 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///website.db'
 app.config['SQLALCHEMY_COMMIT_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# Email configuration
+app.config['MAIL_SERVER'] = 'smtp.mail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_TLS'] = True
+app.config['MAIL_USERNAME'] = os.environ['EMAIL_USERNAME']
+app.config['MAIL_PASSWORD'] = os.environ['EMAIL_PASSWORD']
+
 db = SQLAlchemy(app)
+mailobject = Mail(app)
+
 from model import User
+
+
+def send_mail(to, subject, **kwargs):
+    msg=Message(subject,
+                recipients=[to],
+                sender=app.config['MAIL_USERNAME'])
+    print(msg)
+    msg.html = render_template('welcome-mail.html', **kwargs)
+    mailobject.send(msg)
+
+
 @app.before_first_request
 def setup_db():
     db.drop_all()
@@ -47,6 +67,15 @@ def registration(type_user):
                             phone_number=registrationForm.phone.data)
             db.session.add(new_user)
             db.session.commit()
+
+            # send email
+            send_mail(registerForm.email.data,
+                      'You have registered successfully',
+                      'mail',
+                      name=registerForm.name.data,
+                      username=registerForm.email.data,
+                      password=registerForm.password.data)
+
             return redirect(url_for('homepage'))
         return render_template("Pages/signup-consumer.html", registrationForm=registrationForm)
 
