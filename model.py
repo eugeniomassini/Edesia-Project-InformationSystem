@@ -4,6 +4,8 @@ from app import db
 from flask_login import UserMixin
 from app import login_manager
 
+# 1 User management
+
 # Role class is used to store the roles assigned to the users on Edesia
 # Supplier 1, Consumer 2, Admin 3
 class Role (db.Model):
@@ -61,3 +63,39 @@ class Supplier (db.Model):
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+# 2 Product manangement
+
+class Product (db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    supplier_id = db.Column(db.Integer, db.ForeignKey('supplier.id'))
+    name = db.Column(db.String, nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    quantity = db.Column(db.Float, nullable=False)
+    description = db.Column(db.Text)
+    box = db.Column(db.Boolean)
+
+# 3 Order management
+
+class Order (db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    status = db.Column(db.String)
+    date = db.Column(db.Date)
+    amount = db.Column(db.Float)
+    pickup = db.Column(db.Boolean)
+    consumer_id = db.Column(db.Integer, db.ForeignKey('consumer.id'))
+
+class OrderLines (db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
+    supplier_id = db.Column(db.Integer, db.ForeignKey('supplier.id'))
+    quantity = db.Column(db.Integer)
+
+class Message (db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    surname = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(50), nullable=False)
+    request = db.Column(db.Text, nullable=False)
+    supplier = db.Column(db.Boolean)

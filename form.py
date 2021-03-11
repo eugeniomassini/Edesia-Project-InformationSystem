@@ -43,3 +43,10 @@ class SupplierRegForm(FlaskForm):
 class ResearchForm(FlaskForm):
     city = StringField('City', validators=[DataRequired()])
     submit = SubmitField('Search')
+
+class ProductForm(FlaskForm):
+    name = StringField('Product Name', validators=[DataRequired(), Length(min=3, max=25)])
+    quantity = FloatField('Quantity in kg', validators=[DataRequired()])
+    price = FloatField('Price/kg', validators=[DataRequired()])
+    description =TextAreaField('Description', validators=[Length(max=500)])
+    submit = SubmitField('Add Product')

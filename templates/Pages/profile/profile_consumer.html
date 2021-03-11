@@ -1,33 +1,29 @@
 {% extends 'Components/base.html' %}
-
+{% block profile %}
+    <a class="nav-link" href="{{ url_for('consumer', id=user.id) }}">Profile</a>
+{% endblock %}
 {% block body %}
 
     <div class="container-lg min-vh-100">
         <div class="row mt-5 mb-5">
-            <div class="col-md-4">
+            <div class="col-4">
+
                 <div class="card m-auto rounded-3 border-2" id="cardProfileConsumer">
                     <img src="/static/images/avatar.png" class="card-img-top mt-3 mb-3 m-auto" style="width: 50%">
                     <div class="card-body m-3">
-                        <h5 class="card-title">{{ supplier.supplier_name }}</h5>
+                        <h5 class="card-title">{{ consumer.consumer_name }} {{ consumer.consumer_surname }}</h5>
                         <p class="card-text">{{ user.email }}</p>
-                        <p class="card-text">{{ supplier.supplier_address }}</p>
-                        <p class="card-text">{{ supplier.supplier_phone }}</p>
-                        <p class="card-text">{{ supplier.piva }}</p>
-
+                        <p class="card-text">{{ consumer.consumer_address }}</p>
+                        <p class="card-text">{{ consumer.consumer_phone }}</p>
                     </div>
-                    <div class="list-group list-group-flush m-3">
-                        <a class="list-group-item list-group-item-action" href="{{ url_for('supplier', id=supplier.id, page='orders')}}">Orders</a>
-                        <a class="list-group-item list-group-item-action" href="{{ url_for('supplier', id=supplier.id, page='products')}}">Products</a>
-
-                    </div>
-
-                    <div class="card-body m-3">
+                    <div class="card-body border-top m-3">
                         <button class="btn btn-primary">Edit Profile</button>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-8">
+            <div class="col-8">
+
                 <div class="container-fluid m-1">
                     <div class="row text-center">
                         <h5>Your Order</h5>
@@ -66,16 +62,14 @@
                                     <td><button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#rowTest" aria-expanded="false" aria-controls="rowTest"></button></td>
                                 </tr>
                                 <tr id="rowTest" class="collapse">
-                                    <td>Description of the order</td>
-                                    <td><button class="btn btn-primary" type="submit">Confirm Delivery</button> </td>
+                                    <td>Test</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+                </div>
             </div>
 
         </div>
     </div>
-    </div>
-
 {% endblock %}

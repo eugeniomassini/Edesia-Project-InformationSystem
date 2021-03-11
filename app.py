@@ -198,6 +198,8 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user is not None and bcrypt.check_password_hash(user.password_hash, form.password.data):
             login_user(user)
+            session['roleid']=user.roleid
+            session['id']=user.id
             if user.roleid == 2:
                 return redirect(url_for('consumer', id=user.id))
             elif user.roleid == 1:
@@ -217,27 +219,43 @@ def logout():
 def consumer(id):
     consumer = Consumer.query.filter_by(id=id).first()
     user = User.query.filter_by(id=id).first()
-    return render_template('Pages/profile_consumer.html', consumer=consumer, user=user)
+    return render_template('Pages/profile/profile_consumer.html', consumer=consumer, user=user)
 
 # Supplier page
-@app.route('/supplier/<int:id>/<page>')
+@app.route('/supplier/<int:id>/<page>', methods=['GET', 'POST'])
 @login_required
 def supplier(id, page):
     supplier = Supplier.query.filter_by(id=id).first()
     user = User.query.filter_by(id=id).first()
     if page == "orders":
-        return render_template('Pages/profile_supplier-orders.html', supplier=supplier, user=user)
+        return render_template('Pages/profile/profile_supplier-orders.html', supplier=supplier, user=user)
     elif page == "products":
-        return render_template('Pages/profile_supplier-products.html', supplier=supplier, user=user)
-
-@app.route('/farmer/orders')
-def farmer_orders():
-    return render_template('Pages/profile_supplier-orders.html')
-
-@app.route('/farmer/products')
-def farmer_products():
-    return render_template('Pages/profile_supplier-products.html')
-
+        return render_template('Pages/profile/profile_supplier-products.html', supplier=supplier, user=user)
+    elif page == "add-product":
+        form = ProductForm()
+        if form.validate_on_submit():
+            product = Product(supplier_id=id,
+                              price=form.price.data,
+                              name=form.name.data,
+                              quantity=form.quantity.data,
+                              box=False)
+            db.session.add(product)
+            db.session.commit()
+            return redirect(url_for('supplier', id=id, page='products'))
+        return render_template('Pages/profile/profile-supplier_addProduct.html', supplier=supplier, user=user, form=form)
+    elif page == "add-box":
+        form = ProductForm()
+        if form.validate_on_submit():
+            product = Product(supplier_id=id,
+                              price=form.price.data,
+                              description=form.description.data,
+                              name=form.name.data,
+                              quantity=form.quantity,
+                              box=True)
+            db.session.add(product)
+            db.session.commit()
+            return redirect(url_for('supplier', id=user.id, page='products'))
+        return render_template('Pages/profile/profile-supplier_addBox.html', supplier=supplier, user=user, form=form)
 # 3 Ordering process
 # Research, Farmer store, place order
 
