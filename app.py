@@ -168,9 +168,9 @@ def login():
         if user is not None and bcrypt.check_password_hash(user.password_hash, form.password.data):
             login_user(user)
             if user.roleid == 2:
-                return redirect(url_for('consumer'))
+                return redirect(url_for('consumer', id=user.id))
             elif user.roleid == 1:
-                return redirect(url_for('supplier'))
+                return redirect(url_for('supplier', id=user.id, page='orders'))
     return render_template('Pages/login.html', form=form)
 
 # Logout
@@ -181,16 +181,23 @@ def logout():
     return redirect(url_for('homepage'))
 
 # Consumer profile page
-@app.route('/consumer')
+@app.route('/consumer/<int:id>')
 @login_required
-def consumer():
-    return render_template('Pages/profile_consumer.html')
+def consumer(id):
+    consumer = Consumer.query.filter_by(id=id).first()
+    user = User.query.filter_by(id=id).first()
+    return render_template('Pages/profile_consumer.html', consumer=consumer, user=user)
 
 # Supplier page
-@app.route('/supplier')
+@app.route('/supplier/<int:id>/<page>')
 @login_required
-def supplier():
-    return render_template('Pages/profile_supplier-orders.html')
+def supplier(id, page):
+    supplier = Supplier.query.filter_by(id=id).first()
+    user = User.query.filter_by(id=id).first()
+    if page == "orders":
+        return render_template('Pages/profile_supplier-orders.html', supplier=supplier, user=user)
+    elif page == "products":
+        return render_template('Pages/profile_supplier-products.html', supplier=supplier, user=user)
 
 @app.route('/farmer/orders')
 def farmer_orders():
@@ -212,13 +219,9 @@ def research(city):
 # Farmer Store
 @app.route('/farmer_store/<int:id>')
 def farmer_store(id):
-
-    return render_template("Pages/farmer_store.html")
-
-
-@app.route('/test')
-def test():
-    return render_template("Components/test.html")
+    supplier = Supplier.query.filter_by(id=id).first()
+    #TODO Get prodocuts
+    return render_template("Pages/farmer_store.html", supplier=supplier)
 
 
 if __name__ == '__main__':
