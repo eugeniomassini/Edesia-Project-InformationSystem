@@ -68,12 +68,12 @@ def load_user(user_id):
 
 class Product (db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    box = db.Column(db.Boolean)
     supplier_id = db.Column(db.Integer, db.ForeignKey('supplier.id'))
     name = db.Column(db.String, nullable=False)
     price = db.Column(db.Float, nullable=False)
     quantity = db.Column(db.Float, nullable=False)
     description = db.Column(db.Text)
-    box = db.Column(db.Boolean)
 
     def __repr__(self):
         return "<Product %r>" % self.name
@@ -95,10 +95,10 @@ class OrderLine(db.Model):
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
     supplier_id = db.Column(db.Integer, db.ForeignKey('supplier.id'))
-    quantity = db.Column(db.Integer)
+    quantity = db.Column(db.Float)
     partial_amount = db.Column(db.Float)
 
-class Message (db.Model):
+class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     surname = db.Column(db.String(50), nullable=False)

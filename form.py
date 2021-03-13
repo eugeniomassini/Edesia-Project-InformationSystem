@@ -56,6 +56,7 @@ class OrderEntryForm(FlaskForm):
     quantity = FloatField('Quantity')
     price = FloatField()
     to_order = BooleanField('Add Product')
+    box=BooleanField()
 
 class OrderForm(FlaskForm):
     order = FieldList(FormField(OrderEntryForm))

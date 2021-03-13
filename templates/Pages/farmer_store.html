@@ -23,27 +23,27 @@
         <div class="container-fluid m-5">
             <h2 class="text-center">Box from the farmer</h2>
         </div>
-
-        <div class="row row-cols-md-4">
-            {% for box in boxes %}
-                <div class="col-md">
-                    <div class="card mb-5">
-                        <img src="/static/images/box.png" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ box.name }}</h5>
-                            <p class="card-text">{{ box.description }}</p>
-                            <p class="card-text fs-4">{{ box.price }}</p>
-                            <a href="#" class="btn btn-primary">Add to Cart</a>
+        <form action="{{ url_for('order_func', id = supplier.id) }}" method="post">
+            <div class="row row-cols-md-4">
+                {% for i in range(boxes|length) %}
+                    <div class="col-md">
+                        <div class="card mb-5">
+                            <img src="/static/images/box.png" class="card-img-top">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ boxes[i].name }}</h5>
+                                <p class="card-text">{{ boxes[i].description }}</p>
+                                <p class="card-text fs-4">{{ boxes[i].price }}</p>
+                                 <td>{{ form.order[i].box }}</td>
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
-        </div>
+                {% endfor %}
+            </div>
 
-        <div class="container-fluid m-5">
-            <h2 class="text-center">List of Product</h2>
-        </div>
-        <form action="{{ url_for('test', id = supplier.id) }}" method="post">
+            <div class="container-fluid m-5">
+                <h2 class="text-center">List of Product</h2>
+            </div>
+
             <div class="table-responsive-lg">
                 <table class="table table-hover">
                     <thead class="table-light">
