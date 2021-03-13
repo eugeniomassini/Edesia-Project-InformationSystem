@@ -50,3 +50,13 @@ class ProductForm(FlaskForm):
     price = FloatField('Price/kg', validators=[DataRequired()])
     description =TextAreaField('Description', validators=[Length(max=500)])
     submit = SubmitField('Add Product')
+
+class OrderEntryForm(FlaskForm):
+    name = StringField()
+    quantity = FloatField('Quantity')
+    price = FloatField()
+    to_order = BooleanField('Add Product')
+
+class OrderForm(FlaskForm):
+    order = FieldList(FormField(OrderEntryForm))
+    submit = SubmitField('Confirm Order')

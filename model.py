@@ -75,22 +75,28 @@ class Product (db.Model):
     description = db.Column(db.Text)
     box = db.Column(db.Boolean)
 
+    def __repr__(self):
+        return "<Product %r>" % self.name
+
+
 # 3 Order management
 
 class Order (db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    consumer_id = db.Column(db.Integer, db.ForeignKey('consumer.id'))
+    supplier_id = db.Column(db.Integer, db.ForeignKey('supplier.id'))
     status = db.Column(db.String)
     date = db.Column(db.Date)
     amount = db.Column(db.Float)
     pickup = db.Column(db.Boolean)
-    consumer_id = db.Column(db.Integer, db.ForeignKey('consumer.id'))
 
-class OrderLines (db.Model):
+class OrderLine(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
     supplier_id = db.Column(db.Integer, db.ForeignKey('supplier.id'))
     quantity = db.Column(db.Integer)
+    partial_amount = db.Column(db.Float)
 
 class Message (db.Model):
     id = db.Column(db.Integer, primary_key=True)

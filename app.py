@@ -1,8 +1,10 @@
 # TODO import things I'll need
-from flask import Flask, render_template, session, redirect, url_for, abort
+from flask import Flask, render_template, session, redirect, url_for, abort, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, current_user, logout_user
-
+from flask_wtf import FlaskForm
+from wtforms import *
+from wtforms.validators import *
 from flask_bcrypt import Bcrypt
 import os
 from flask_mail import Mail, Message
@@ -84,6 +86,27 @@ def setup_db():
                             piva='000000',
                             description='Local & Fresh Food')
     db.session.add(new_supplier)
+    db.session.commit()
+
+    product1 = Product(supplier_id = 2,
+                        name = 'Tomatoes',
+                        price = 3.00,
+                        quantity = 5.00,
+                        description = None,
+                        box = False)
+    product2 = Product(supplier_id = 2,
+                        name = 'Potatoes',
+                        price = 3.00,
+                        quantity = 5.00,
+                        description = None,
+                        box = False)
+    box1 = Product(supplier_id = 2,
+                    name = 'Our Box',
+                    price = 3.00,
+                    quantity = 5.00,
+                    description = 'The Box Contains: -5kg of Carrots\n-3kg of beats',
+                    box = True)
+    db.session.add_all([product1, product2, box1])
     db.session.commit()
 
 
@@ -256,6 +279,8 @@ def supplier(id, page):
             db.session.commit()
             return redirect(url_for('supplier', id=user.id, page='products'))
         return render_template('Pages/profile/profile-supplier_addBox.html', supplier=supplier, user=user, form=form)
+
+
 # 3 Ordering process
 # Research, Farmer store, place order
 
@@ -266,12 +291,60 @@ def research(city):
     return render_template("Pages/research_result.html", suppliers=suppliers)
 
 # Farmer Store
-@app.route('/farmer_store/<int:id>')
+@app.route('/farmer_store/<int:id>', methods=['GET', 'POST'])
 def farmer_store(id):
     supplier = Supplier.query.filter_by(id=id).first()
-    #TODO Get prodocuts
-    return render_template("Pages/farmer_store.html", supplier=supplier)
+    products = Product.query.filter_by(supplier_id=id, box=False).all()
+    boxes = Product.query.filter_by(supplier_id=id, box=True).all()
+    class LocalForm(OrderForm):pass
+    LocalForm.order = FieldList(FormField(OrderEntryForm), min_entries=len(products))
 
+    form=LocalForm()
+
+    if form.validate_on_submit():
+        print 'validato'
+        for entry in form.order.entries:
+            print entry.quantity.data
+
+    return render_template("Pages/farmer_store.html", supplier=supplier, products=products, boxes=boxes, form=form)
+
+@app.route('/test/<int:id>', methods=['POST'])
+def test(id):
+    products = Product.query.filter_by(supplier_id=id, box=False).all()
+    order = request.form
+    order_dict = { x:order[x] for x in order if "order-" in x}
+    amount = 0.0
+    for i in range(len(products)):
+        quantity = 'order-%d-quantity' % i
+        to_order = 'order-%d-to_order' % i
+        print order_dict[quantity]
+        print order_dict[to_order]
+        amount = float(products[i].price) * float(order_dict[quantity]) + amount
+
+    order_db = Order(consumer_id=session['id'],
+                     supplier_id=id,
+                     amount=amount)
+    db.session.add(order_db)
+    db.session.commit()
+
+    for i in range(len(products)):
+        print 'db enter'
+        quantity = 'order-%d-quantity' % i
+        to_order = 'order-%d-to_order' % i
+        print order_dict[quantity]
+        print order_dict[to_order]
+        order_id = Order.query.order_by(Order.id.desc()).first()
+        print order_id.id
+        order_line = OrderLine(order_id=order_id.id,
+                               product_id=products[i].id,
+                               supplier_id=id,
+                               quantity=order_dict[quantity],
+                               partial_amount=float(products[i].price) * float(order_dict[quantity]))
+        db.session.add(order_line)
+        db.session.commit()
+
+    print amount
+    return order_dict
 
 if __name__ == '__main__':
     app.run(debug=True)

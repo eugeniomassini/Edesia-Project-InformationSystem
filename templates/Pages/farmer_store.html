@@ -25,55 +25,66 @@
         </div>
 
         <div class="row row-cols-md-4">
-            <div class="col-md">
-                <div class="card mb-5">
-                    <img src="/static/images/box.png" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">Name Of the Box</h5>
-                        <p class="card-text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."</p>
-                        <p class="card-text fs-4">Price €</p>
-                        <a href="#" class="btn btn-primary">Add to Cart</a>
+            {% for box in boxes %}
+                <div class="col-md">
+                    <div class="card mb-5">
+                        <img src="/static/images/box.png" class="card-img-top">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ box.name }}</h5>
+                            <p class="card-text">{{ box.description }}</p>
+                            <p class="card-text fs-4">{{ box.price }}</p>
+                            <a href="#" class="btn btn-primary">Add to Cart</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="col-md">
-                <div class="card mb-5">
-                    <img src="/static/images/box.png" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">Name Of the Box</h5>
-                        <p class="card-text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."</p>
-                        <p class="card-text fs-4">Price €</p>
-                        <a href="#" class="btn btn-primary">Add to Cart</a>
-                    </div>
-                </div>
-            </div>
-
+            {% endfor %}
         </div>
 
         <div class="container-fluid m-5">
             <h2 class="text-center">List of Product</h2>
         </div>
-
-        <div class="table-responsive-lg">
-            <table class="table table-hover">
-                <thead class="table-light">
-                <tr>
-                    <th scope="col">Name of the product</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Add to cart</th>
-                </tr>
-                </thead>
-                <tbody>
-                <!-- Basic Row to iterate -->
+        <form action="{{ url_for('test', id = supplier.id) }}" method="post">
+            <div class="table-responsive-lg">
+                <table class="table table-hover">
+                    <thead class="table-light">
                     <tr>
-                        <td scope="row">Tomatoes</td>
-                        <td><div class="input-group"><input type="text" class="form-control" placeholder="Insert quantity"><span class="input-group-text">Kg</span> </div> </td>
-                        <td><a class="btn btn-primary">Add to cart</a> </td>
+                        <th scope="col">Name of the product</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price/kg</th>
+                        <th scope="col">Add to cart</th>
                     </tr>
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                    <!-- Basic Row to iterate -->
+                    {% for i in range(products|length) %}
+                        <tr>
+                            <td scope="row">{{ products[i].name }}</td>
+                            <td>{{ form.order[i].quantity }}</td>
+                            <td>{{ products[i].price }}</td>
+                            <td>{{ form.order[i].to_order }}</td>
+                        </tr>
+                    {% endfor %}
+
+
+{#                    {% for product in products %}#}
+{#                     <tr>#}
+{##}
+{#                         <td scope="row">{{ product.name }}</td>#}
+{##}
+{#                        {% for f in form.order %}#}
+{#                            <td>{{ f.quantity }}</td>#}
+{#                        {% endfor %}#}
+{#                        </tr>#}
+{#                    {% endfor %}#}
+
+
+                    </tbody>
+                </table>
+            </div>
+            {{ form.submit }}
+            {{ form.hidden_tag() }}
+        </form>
+
 
         <div class="container-fluid m-5">
             <h2 class="text-center">Reviews</h2>
