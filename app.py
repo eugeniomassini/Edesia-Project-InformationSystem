@@ -91,7 +91,7 @@ def setup_db():
     product1 = Product(supplier_id = 2,
                         name = 'Tomatoes',
                         price = 3.00,
-                        quantity = 20.00,
+                        quantity = 0.00,
                         description = None,
                         box = False)
     product2 = Product(supplier_id = 2,
@@ -364,8 +364,9 @@ def research(city):
 @app.route('/farmer_store/<int:id>', methods=['GET', 'POST'])
 def farmer_store(id):
     supplier = Supplier.query.filter_by(id=id).first()
-    products = Product.query.filter_by(supplier_id=id, box=False).all()
-    boxes = Product.query.filter_by(supplier_id=id, box=True).all()
+    products = Product.query.filter(Product.supplier_id==id, Product.box==False, Product.quantity>0.0).all()
+    #products = Product.query.filter_by(supplier_id=id, box=False).all()
+    boxes = Product.query.filter(Product.supplier_id==id, Product.box==True, Product.quantity>0.0).all()
     min_entries = len(products)+len(boxes)
     class LocalForm(OrderForm):pass
     LocalForm.order = FieldList(FormField(OrderEntryForm), min_entries=min_entries)
