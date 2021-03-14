@@ -63,8 +63,8 @@ class OrderForm(FlaskForm):
     submit = SubmitField('Confirm Order')
 
 class ContactUsForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired(), Length(min=3, max=25)])
-    surname = StringField('Surname', validators=[DataRequired(), Length(min=3, max=25)])
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    name = StringField('Name:', validators=[DataRequired(), Length(min=3, max=25)])
+    surname = StringField('Surname:', validators=[DataRequired(), Length(min=3, max=25)])
+    email = StringField('Email:', validators=[DataRequired(), Email()])
     message = TextAreaField('Message:', validators=[DataRequired(), Length(max=1000)])
     submit = SubmitField('Send Message')

@@ -9,30 +9,43 @@
                 <p>If you are expeperiencing any issue with Edesia please contat us and we will get in touch with you as soon as possible</p>
             </div>
             <div class="col m-auto">
-                <form>
+                <form method="post">
                     <div class="row">
                         <div class="col">
-                            <label>Name</label>
-                            <input class="form-control" type="text">
+                            {{form.name.label}}
+                            {{ form.name(class="form-control")}}
+                            {% for error in form.name.errors %}
+                            <p style="color: red">{{ error }}</p>
+                            {% endfor %}
                         </div>
                         <div class="col">
-                            <label>Surname</label>
-                            <input class="form-control" type="text">
+                            {{form.surname.label}}
+                            {{ form.surname(class="form-control")}}
+                            {% for error in form.surname.errors %}
+                             <p style="color: red">{{ error }}</p>
+                            {% endfor %}
                         </div>
                     </div>
+                        {{form.email.label}}
+                        {{ form.email(class="form-control")}}
+                        {% for error in form.email.errors %}
+                              <p style="color: red">{{ error }}</p>
+                        {% endfor %}
 
-                    <div class="row">
-                        <label>Mail</label>
-                        <input class="form-control" type="email">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox">
-                            <label class="form-check-label">Farmer</label>
-                        </div>
-                    </div>
-                    <label>Message:</label>
-                    <textarea class="form-control" style="height: 100px"></textarea>
+                        {{form.message.label}}
+                        {{ form.message(class="form-control")}}
+                        {% for error in form.message.errors %}
+                             <p style="color: red">{{ error }}</p>
+                        {% endfor %}
 
-                    <button class="btn btn-primary" type="submit">Submit</button>
+                        {{ form.submit(class="btn btn-primary mt-3")}}
+                        {{ form.hidden_tag() }}
+
+                        {%if get_flashed_messages() %}
+                            <div class="alert alert-success mt-5" role="alert">
+                                Request submitted successfully
+                            </div>
+                        {% endif %}
                 </form>
             </div>
         </div>

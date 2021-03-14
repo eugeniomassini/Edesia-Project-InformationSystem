@@ -1,5 +1,5 @@
 # TODO import things I'll need
-from flask import Flask, render_template, session, redirect, url_for, abort, request
+from flask import Flask, render_template, session, redirect, url_for, flash, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 from flask_wtf import FlaskForm
@@ -136,7 +136,7 @@ def page_not_foud(e):
 def internal_server_error(e):
     return render_template('error/500.html')
 
-# Homepagage routing
+# Homepage routing and beginning of the research process
 # TODO google maps search bar
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/homepage', methods=['GET', 'POST'])
@@ -152,9 +152,20 @@ def about_us():
     return render_template("Pages/general/about-us.html", title="About Us - Edesia")
 
 #Contact Us routing
-@app.route('/contact-us')
+@app.route('/contact-us', methods=['GET', 'POST'])
 def contact_us():
-    return render_template("Pages/general/contact-us.html", title="Contact Us - Edesia")
+    form=ContactUsForm()
+    if form.validate_on_submit():
+        message = Message(name=form.name.data,
+                          surname=form.surname.data,
+                          email=form.email.data,
+                          request=form.message.data)
+        db.session.add(message)
+        db.session.commit()
+        flash('Success')
+        return redirect(url_for('contact_us'))
+
+    return render_template("Pages/general/contact-us.html", title="Contact Us - Edesia", form=form)
 
 # 2 - Functions Reg and Log
 
