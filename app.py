@@ -138,7 +138,7 @@ def internal_server_error(e):
 
 # Homepagage routing
 # TODO google maps search bar
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 @app.route('/homepage', methods=['GET', 'POST'])
 def homepage():
     researchForm = ResearchForm()
