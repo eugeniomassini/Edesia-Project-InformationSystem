@@ -43,13 +43,17 @@
             <div class="container-fluid m-5">
                 <h2 class="text-center">List of Product</h2>
             </div>
+                {% if get_flashed_messages() %}
+                    <p style="color: red">Select the right quantities</p>
+                {% endif %}
 
             <div class="table-responsive-lg">
                 <table class="table table-hover">
                     <thead class="table-light">
                     <tr>
                         <th scope="col">Name of the product</th>
-                        <th scope="col">Quantity</th>
+                        <th scope="col">Quantity in kg</th>
+                        <th scope="col">Available</th>
                         <th scope="col">Price/kg</th>
                         <th scope="col">Add to cart</th>
                     </tr>
@@ -60,24 +64,11 @@
                         <tr>
                             <td scope="row">{{ products[i].name }}</td>
                             <td>{{ form.order[i].quantity }}</td>
+                            <td>{{ products[i].quantity }} Kg</td>
                             <td>{{ products[i].price }}</td>
                             <td>{{ form.order[i].to_order }}</td>
                         </tr>
                     {% endfor %}
-
-
-{#                    {% for product in products %}#}
-{#                     <tr>#}
-{##}
-{#                         <td scope="row">{{ product.name }}</td>#}
-{##}
-{#                        {% for f in form.order %}#}
-{#                            <td>{{ f.quantity }}</td>#}
-{#                        {% endfor %}#}
-{#                        </tr>#}
-{#                    {% endfor %}#}
-
-
                     </tbody>
                 </table>
             </div>

@@ -1,0 +1,24 @@
+{% extends 'Components/base.html' %}
+
+{% block body %}
+
+    <div class="col-lg-6 m-auto">
+        <div class="card rounded-3 border-3" id="cardResult">
+            <div class="card-body">
+                <div class="card-title m-auto text-center">
+                    <i class="far fa-check-circle fa-7x" style="color: #0F7619"></i>
+                </div>
+                <div class="card-title"> Order N: #{{ order_id }}</div>
+                <div class="card-title">Thanks for buying from Edesia</div>
+                <div class="card-text">
+                    {% for product in bought %}
+                        <h4>{{ product.product.name }}</h4>
+                        <p>Quantity: {{ product.quantity }}</p>
+                    {% endfor %}
+                </div>
+                <h5>Total: {{ amount }}</h5>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

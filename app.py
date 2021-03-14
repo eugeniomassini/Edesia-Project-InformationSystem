@@ -377,6 +377,10 @@ def farmer_store(id):
 @app.route('/order/confirmation/<int:id>', methods=['POST'])
 @login_required
 def order_func(id):
+    if session['roleid'] == 1:
+        return redirect(url_for('homepage'))
+
+    supplier = Supplier.query.filter_by(id=id).first()
     products = Product.query.filter_by(supplier_id=id, box=False).all()
     boxes = Product.query.filter_by(supplier_id=id, box=True).all()
     n = len(products)+len(boxes)
@@ -400,9 +404,21 @@ def order_func(id):
                     bought_l.append(Bought(boxes[i], 1.0))
                     print order_dict[key]
                 elif to_order == key:
+                    if order_dict[quantity] < products[i].quantity:
+                        flash(products[i].name)
+                        return redirect(url_for('farmer_store', id=id))
                     amount = float(products[i].price) * float(order_dict[quantity]) + amount
                     bought_l.append(Bought(products[i], order_dict[quantity]))
                     print order_dict[key]
+
+    if not bought_l:
+        flash('Error')
+        return redirect(url_for('farmer_store', id=id))
+    else:
+        for element in bought_l:
+            product = Product.query.filter_by(id=element.product.id).first()
+            product.quantity = float(product.quantity) - float(element.quantity)
+            db.session.commit()
 
     order_db = Order(consumer_id=session['id'],
                      supplier_id=id,
@@ -415,14 +431,15 @@ def order_func(id):
     for element in bought_l:
         order_line = OrderLine(order_id=order_id.id,
                                product_id=element.product.id,
+                               product_name=element.product.name,
                                supplier_id=id,
                                quantity=element.quantity,
                                partial_amount=float(element.product.price) * float(element.quantity))
         db.session.add(order_line)
         db.session.commit()
 
-    print amount
-    return order_dict
+    return render_template('Pages/order_confirmation.html', bought=bought_l, amount=amount, supplier=supplier.supplier_name, order_id=order_id.id)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
