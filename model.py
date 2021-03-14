@@ -51,6 +51,7 @@ class Supplier (db.Model):
     id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     supplier_name = db.Column(db.String(50), nullable=False)
     supplier_address = db.Column(db.String(50), nullable=False)
+    supplier_city = db.Column(db.String(50), nullable=False)
     supplier_phone = db.Column(db.String(12), nullable=False)
     piva = db.Column(db.String(25), nullable=False)
     description = db.Column(db.String(500), nullable=True)
@@ -100,7 +101,7 @@ class OrderLine(db.Model):
 
 
 # 4 Contact Us message storage
-class Message(db.Model):
+class AssistanceMessage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     surname = db.Column(db.String(50), nullable=False)

@@ -29,19 +29,18 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 mail = Mail(app)
 
-login_manager = LoginManager()
+login_manager = LoginManager(app)
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'login'
-login_manager.init_app(app)
+# login_manager.init_app(app)
 
 from model import *
 from form import *
 
-# Mail Function
 def send_mail(to, subject, **kwargs):
-    msg=Message(subject,
-                sender=app.config['MAIL_USERNAME'],
-                recipients=[to])
+    msg = Message(subject,
+                  sender = app.config['MAIL_USERNAME'],
+                  recipients=[to])
     msg.html = render_template('welcome-mail.html', **kwargs)
     mail.send(msg)
 
@@ -156,10 +155,10 @@ def about_us():
 def contact_us():
     form=ContactUsForm()
     if form.validate_on_submit():
-        message = Message(name=form.name.data,
-                          surname=form.surname.data,
-                          email=form.email.data,
-                          request=form.message.data)
+        message = AssistanceMessage(name=form.name.data,
+                                    surname=form.surname.data,
+                                    email=form.email.data,
+                                    request=form.message.data)
         db.session.add(message)
         db.session.commit()
         flash('Success')
@@ -202,7 +201,6 @@ def registration(type_user):
                       name=registrationForm.name.data,
                       username=registrationForm.email.data,
                       password=registrationForm.password.data)
-
             return redirect(url_for('login'))
         return render_template('Pages/registration/signup-consumer.html', registrationForm=registrationForm)
 
@@ -227,7 +225,6 @@ def registration(type_user):
             # send email
             send_mail(registrationForm.email.data,
                       'You have registered successfully',
-                      'mail',
                       name=registrationForm.name.data,
                       username=registrationForm.email.data,
                       password=registrationForm.password.data)
@@ -337,7 +334,7 @@ def order_func(id):
     order = request.form
     order_dict = { x:order[x] for x in order if "order-" in x}
     amount = 0.0
-    bought_l=[]
+    bought_l = []
     class Bought():
         def __init__(self, product, quantity):
             self.product = product
