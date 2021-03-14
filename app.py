@@ -63,10 +63,10 @@ def setup_db():
     db.session.add(newuser)
     db.session.commit()
     newconsumer = Consumer(id=1,
-                        consumer_name='Eugenio',
-                        consumer_surname='Massini',
-                        consumer_address='Paperopoli',
-                        consumer_phone='3331234567')
+                           consumer_name='Eugenio',
+                           consumer_surname='Massini',
+                           consumer_address='Paperopoli',
+                           consumer_phone='3331234567')
     db.session.add(newconsumer)
     db.session.commit()
     password1 = bcrypt.generate_password_hash('12345678').encode('utf-8')
@@ -81,6 +81,7 @@ def setup_db():
     new_supplier = Supplier(id=user_info.id,
                             supplier_name='Fruit & Vegetables',
                             supplier_address='Torino',
+                            supplier_city='Torino',
                             supplier_phone='0123456789',
                             piva='000000',
                             description='Local & Fresh Food')
@@ -90,19 +91,19 @@ def setup_db():
     product1 = Product(supplier_id = 2,
                         name = 'Tomatoes',
                         price = 3.00,
-                        quantity = 5.00,
+                        quantity = 20.00,
                         description = None,
                         box = False)
     product2 = Product(supplier_id = 2,
                         name = 'Potatoes',
                         price = 3.00,
-                        quantity = 5.00,
+                        quantity = 20.00,
                         description = None,
                         box = False)
     product3 = Product(supplier_id=2,
                        name='Beats',
                        price=3.00,
-                       quantity=5.00,
+                       quantity=10.00,
                        description=None,
                        box=False)
     box1 = Product(supplier_id = 2,
@@ -118,6 +119,20 @@ def setup_db():
                    description='The Box Contains: -5kg of Carrots\n-3kg of beats',
                    box=True)
     db.session.add_all([product1, product2, product3, box1, box2])
+    db.session.commit()
+
+    order1 = Order(consumer_id=1,
+                   supplier_id=2,
+                   amount=15.00)
+    db.session.add(order1)
+    db.session.commit()
+    orderline1 = OrderLine(order_id=1,
+                           supplier_id=2,
+                           product_id=2,
+                           product_name='Beats',
+                           quantity=3.00,
+                           partial_amount=9.00)
+    db.session.add(orderline1)
     db.session.commit()
 
 
@@ -262,7 +277,24 @@ def logout():
 def consumer(id):
     consumer = Consumer.query.filter_by(id=id).first()
     user = User.query.filter_by(id=id).first()
-    return render_template('Pages/profile/profile_consumer.html', consumer=consumer, user=user)
+    orders = Order.query.filter_by(consumer_id=id).all()
+    l_order_cons =[]
+
+    class OrderCons():
+        def __init__(self, order, content):
+            self.order = order
+            self.content = content
+
+    for o in orders:
+        products = []
+        lines = OrderLine.query.filter_by(order_id=o.id)
+
+        for l in lines:
+            products.append(l)
+
+        l_order_cons.append(OrderCons(o, products))
+
+    return render_template('Pages/profile/profile_consumer.html', consumer=consumer, user=user, orders=l_order_cons)
 
 # Supplier page
 @app.route('/supplier/<int:id>/<page>', methods=['GET', 'POST'])
@@ -271,9 +303,26 @@ def supplier(id, page):
     supplier = Supplier.query.filter_by(id=id).first()
     user = User.query.filter_by(id=id).first()
     if page == "orders":
-        return render_template('Pages/profile/profile_supplier-orders.html', supplier=supplier, user=user)
+        orders = Order.query.filter_by(supplier_id=id).all()
+        l_order_cons = []
+
+        class OrderCons():
+            def __init__(self, order, content):
+                self.order = order
+                self.content = content
+
+        for o in orders:
+            products = []
+            lines = OrderLine.query.filter_by(order_id=o.id)
+
+            for l in lines:
+                products.append(l)
+
+            l_order_cons.append(OrderCons(o, products))
+        return render_template('Pages/profile/profile_supplier-orders.html', supplier=supplier, user=user, orders=l_order_cons)
     elif page == "products":
-        return render_template('Pages/profile/profile_supplier-products.html', supplier=supplier, user=user)
+        products = Product.query.filter_by(supplier_id=id).all()
+        return render_template('Pages/profile/profile_supplier-products.html', supplier=supplier, user=user, products=products)
     elif page == "add-product":
         form = ProductForm()
         if form.validate_on_submit():

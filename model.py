@@ -51,7 +51,7 @@ class Supplier (db.Model):
     id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     supplier_name = db.Column(db.String(50), nullable=False)
     supplier_address = db.Column(db.String(50), nullable=False)
-    supplier_city = db.Column(db.String(50), nullable=False)
+    supplier_city = db.Column(db.String(50))
     supplier_phone = db.Column(db.String(12), nullable=False)
     piva = db.Column(db.String(25), nullable=False)
     description = db.Column(db.String(500), nullable=True)
@@ -94,8 +94,9 @@ class Order (db.Model):
 class OrderLine(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
-    product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
     supplier_id = db.Column(db.Integer, db.ForeignKey('supplier.id'))
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
+    product_name = db.Column(db.String)
     quantity = db.Column(db.Float)
     partial_amount = db.Column(db.Float)
 

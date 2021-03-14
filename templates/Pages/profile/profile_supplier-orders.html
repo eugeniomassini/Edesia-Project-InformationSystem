@@ -5,43 +5,39 @@
                         <h5>Your Order</h5>
                     </div>
 
+                    {% if orders %}
+
+                    {% for order in orders %}
+
+                        <h3>Order N: {{ order.order.id }}</h3>
+                        <p>Total: {{ order.order.amount }}€</p>
+
                     <div class="table-responsive-lg">
                         <table class="table table-hover">
                             <thead class="table-light">
                                 <tr>
-                                    <th scope="col">#Order</th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Amount</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Icon</th>
-                                    <th scope="col">Info</th>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Partial Amount</th>
                                 </tr>
                             </thead>
                             <tbody>
+                            {% for line in order.content %}
                                 <tr>
-                                    <th scope="row">#1</th>
-                                    <td>01-01-2021</td>
-                                    <td>25,23 €</td>
-                                    <td>Delivered</td>
-                                    <td><i class="fas fa-check-double"></i></td>
-                                    <td><button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#rowTest" aria-expanded="false" aria-controls="rowTest"></button></td>
+                                    <th scope="row">{{ line.product_name }}</th>
+                                    <td>{{line.quantity}}</td>
+                                    <td>{{ line.partial_amount}}</td>
                                 </tr>
-                                <tr id="rowTest" class="collapse">
-                                    <td>Test</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">#1</th>
-                                    <td>01-01-2021</td>
-                                    <td>25,23 €</td>
-                                    <td>Delivered</td>
-                                    <td><i class="fas fa-check-double"></i></td>
-                                    <td><button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#rowTest" aria-expanded="false" aria-controls="rowTest"></button></td>
-                                </tr>
-                                <tr id="rowTest" class="collapse">
-                                    <td>Description of the order</td>
-                                    <td><button class="btn btn-primary" type="submit">Confirm Delivery</button> </td>
-                                </tr>
+                            {% endfor %}
+
+
                             </tbody>
+
                         </table>
                     </div>
+                {% endfor %}
+                {% else %}
+                    <p>No orders found</p>
+                {% endif %}
+
 {% endblock %}

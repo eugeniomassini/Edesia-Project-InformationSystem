@@ -4,15 +4,41 @@
 
                     <div class="row text-center">
                         <h5>Your Products</h5>
-                        <a class="btn btn-primary w-50 align-middle m-5" href="{{ url_for('supplier', id=user.id, page='add-product')}}">Add Product</a>
-                        <a class="btn btn-primary w-50 align-middle m-5" href="{{ url_for('supplier', id=user.id, page='add-box')}}">Add Box</a>
+                        <div class="row row-cols-lg-2 m-auto p-3">
+                            <div class="col">
+                                <a class="btn btn-primary w-50 m-auto" href="{{ url_for('supplier', id=user.id, page='add-product')}}">Add Product</a>
+                            </div>
+                            <div class="col">
+                                <a class="btn btn-primary w-50 m-auto" href="{{ url_for('supplier', id=user.id, page='add-box')}}">Add Box</a>
+                            </div>
+                        </div>
                     </div>
+
+                    {% for product in products %}
+                        {% if product.box %}
+                            <div class="card m-4 rounded-3 border-3" id="cardResult">
+                                <div class="row">
+                                    <div class="col-lg">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                {{ product.name }}
+                                            </h5>
+                                            <p class="card-text">{{ product.description}}</p>
+                                            <p class="card-text">Price: {{ product.price }} €</p>
+                                            <p class="card-text">Quantity: {{ product.quantity }}</p>
+                                            <a class="btn btn-primary">Edit</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
 
                     <div class="table-responsive-lg">
                         <table class="table table-hover">
                             <thead class="table-light">
                                 <tr>
-                                    <th scope="col">#Order</th>
+                                    <th scope="col">#Id</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Price/kg</th>
@@ -20,13 +46,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">#1</th>
-                                    <td>Tomatoes</td>
-                                    <td>3 kg</td>
-                                    <td>3 €/kg</td>
-                                    <td><button class="btn btn-primary" type="button">Edit</button></td>
-                                </tr>
+                            {% for product in products %}
+                                {% if product.box == False %}
+                                    <tr>
+                                        <th scope="row">{{ product.id }}</th>
+                                        <td>{{ product.name }}</td>
+                                        <td>{{ product.quantity }} Kg</td>
+                                        <td>{{ product.price }} €/kg</td>
+                                        <td><button class="btn btn-primary" type="button">Edit</button></td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>

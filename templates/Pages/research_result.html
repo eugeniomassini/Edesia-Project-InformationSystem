@@ -15,23 +15,23 @@
                 {% if suppliers %}
                     {% for supplier in suppliers %}
                     <div class="card m-4 rounded-3 border-3" id="cardResult">
-                    <div class="row">
-                        <div class="col-4 col-md-4">
-                            <img src="/static/images/hp_first.png" class="card-img">
-                        </div>
-                        <div class="col-8 col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    {{ supplier.supplier_name }}
-                                </h5>
-                                <p class="card-text">{{ supplier.supplier_address }}</p>
-                                <p class="card-text">{{ supplier.description}}</p>
-                                <p class="card-text">Rating</p>
-                                <a class="btn btn-primary" href="{{ url_for('farmer_store', id=supplier.id) }}">Open Store</a>
+                        <div class="row">
+                            <div class="col-4 col-md-4">
+                                <img src="/static/images/hp_first.png" class="card-img">
+                            </div>
+                            <div class="col-8 col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        {{ supplier.supplier_name }}
+                                    </h5>
+                                    <p class="card-text">{{ supplier.supplier_address }}</p>
+                                    <p class="card-text">{{ supplier.description}}</p>
+                                    <p class="card-text">Rating</p>
+                                    <a class="btn btn-primary" href="{{ url_for('farmer_store', id=supplier.id) }}">Open Store</a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
                     {% endfor %}
                 {% else %}
                     <div class="row text-center">
