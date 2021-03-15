@@ -2,7 +2,6 @@ from flask_wtf import FlaskForm
 from wtforms import *
 from wtforms.validators import *
 from model import *
-from markupsafe import Markup
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -11,12 +10,12 @@ class LoginForm(FlaskForm):
 
 # Registration form for the consumer
 class ConsumerRegForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired(), Length(min=3, max=25)])
-    surname = StringField('Surname', validators=[DataRequired(), Length(min=3, max=25)])
-    address = StringField('Address', validators=[DataRequired(), Length(min=3, max=40)])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    phone = StringField('Phone', validators=[DataRequired(), Length(min=7, max=12)]) #TODO find a phone validator. number
-    password = PasswordField('Password', validators=[DataRequired(), Length(min=6, max=20)])
+    name = StringField('Name:', validators=[DataRequired(), Length(min=3, max=25)])
+    surname = StringField('Surname:', validators=[DataRequired(), Length(min=3, max=25)])
+    address = StringField('Address:', validators=[DataRequired(), Length(min=3, max=40)])
+    email = StringField('Email:', validators=[DataRequired(), Email()])
+    phone = StringField('Phone:', validators=[DataRequired(), Length(min=7, max=12)]) #TODO find a phone validator. number
+    password = PasswordField('Password:', validators=[DataRequired(), Length(min=6, max=20)])
     submit = SubmitField('Register')
 
     # Function to validate email
@@ -27,13 +26,13 @@ class ConsumerRegForm(FlaskForm):
 
 # Registration form for the supplier
 class SupplierRegForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired(), Length(min=3, max=25)])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired(), Length(min=6, max=20)])
-    piva = StringField('PIVA', validators=[DataRequired(), Length(min=3, max=25)]) # TODO PIVA validator. number. code
-    address = StringField('Address', validators=[DataRequired(), Length(min=3, max=40)])
-    phone = StringField('Phone', validators=[DataRequired(), Length(min=7, max=12)])  # TODO find a phone validator. number
-    description = TextAreaField('Description', validators=[DataRequired(), Length(max=500)]) # no minimum and max of 500 characters
+    name = StringField('Name:', validators=[DataRequired(), Length(min=3, max=25)])
+    email = StringField('Email:', validators=[DataRequired(), Email()])
+    password = PasswordField('Password:', validators=[DataRequired(), Length(min=6, max=20)])
+    piva = StringField('PIVA:', validators=[DataRequired(), Length(min=3, max=25)])
+    address = StringField('Address:', validators=[DataRequired(), Length(min=3, max=100)])
+    phone = StringField('Phone:', validators=[DataRequired(), Length(min=7, max=12)])
+    description = TextAreaField('Description:', validators=[DataRequired(), Length(max=500)]) # no minimum and max of 500 characters
     submit = SubmitField('Register')
 
     def validate_email(self, email):

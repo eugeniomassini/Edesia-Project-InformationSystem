@@ -1,78 +1,74 @@
 {% extends 'Components/base.html' %}
 
 {% block body %}
-<div class="row text-center">
-    <h1>Join Edesia!</h1>
-</div>
 
-<div class="container-fluid">
-    <form method="post">
-        <div class="col-md-9 m-auto">
-             <div class="form-group">
-              {{ registrationForm.name.label }}
-                {{ registrationForm.name(class='form-control') }}
-                {% for error in registrationForm.name.errors %}
-                    <div class="alert alert-danger">{{ error }}</div>
-                {% endfor  %}
-                <p class="help-block"></p>
+    <div class="card m-5 shadow">
+        <div class="row row-cols-lg-2">
+            <div class="col-lg-6">
+                <img src="/static/images/registration/farmer-reg_page.jpg" class="img-fluid card-img w-100">
             </div>
+            <div class="col-lg-6">
+                <div class="card-body">
+                    <div class="card-title m-2">
+                        <h5>Join Edesia</h5>
+                    </div>
+                    <form method="post" id="form_error">
+                        <div class="form-group m-2">
+                            {{ registrationForm.name.label }}
+                            {{ registrationForm.name(class='form-control') }}
+                            {% for error in registrationForm.name.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
 
-            <div class="form-group">
-              {{ registrationForm.email.label }}
-                {{ registrationForm.email(class='form-control') }}
-                {% for error in registrationForm.email.errors %}
-                    <div class="alert alert-danger">{{ error }}</div>
-                {% endfor  %}
-                <p class="help-block"></p>
-            </div>
+                        <div class="form-group m-2">
+                                {{ registrationForm.email.label }}
+                                {{ registrationForm.email(class='form-control') }}
+                                {% for error in registrationForm.email.errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        <div class="form-group m-2">
+                                {{ registrationForm.password.label }}
+                                {{ registrationForm.password(class='form-control') }}
+                                {% for error in registrationForm.password.errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        <div class="form-group m-2">
+                                {{ registrationForm.piva.label }}
+                                {{ registrationForm.piva(class='form-control') }}
+                                {% for error in registrationForm.piva.errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
 
-            <div class="form-group">
-              {{ registrationForm.password.label }}
-                {{ registrationForm.password(class='form-control') }}
-                {% for error in registrationForm.password.errors %}
-                    <div class="alert alert-danger">{{ error }}</div>
-                {% endfor  %}
-                <p class="help-block"></p>
+                        <div class="form-group m-2">
+                                {{ registrationForm.address.label }}
+                                {{ registrationForm.address(class='form-control', id="autocomplete", onfocus="geolocate()")}}
+                                {% for error in registrationForm.address.errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        <div class="form-group m-2">
+                                {{ registrationForm.phone.label }}
+                                {{ registrationForm.phone(class='form-control') }}
+                                {% for error in registrationForm.phone.errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                        </div>
+                        <div class="form-group m-2">
+                          {{ registrationForm.description.label }}
+                            {{ registrationForm.description(class='form-control', rows="3") }}
+                            {% for error in registrationForm.description.errors %}
+                                <p >{{ error }}</p>
+                            {% endfor  %}
+                        </div>
+                        {{ registrationForm.submit(class='btn btn-primary m-2') }}
+                        {{ registrationForm.hidden_tag() }}
+                    </form>
+                </div>
             </div>
-
-            <div class="form-group">
-              {{ registrationForm.piva.label }}
-                {{ registrationForm.piva(class='form-control') }}
-                {% for error in registrationForm.piva.errors %}
-                    <div class="alert alert-danger">{{ error }}</div>
-                {% endfor  %}
-                <p class="help-block"></p>
-            </div>
-
-            <div class="form-group">
-              {{ registrationForm.address.label }}
-                {{ registrationForm.address(class='form-control') }}
-                {% for error in registrationForm.address.errors %}
-                    <div class="alert alert-danger">{{ error }}</div>
-                {% endfor  %}
-                <p class="help-block"></p>
-            </div>
-
-            <div class="form-group">
-              {{ registrationForm.phone.label }}
-                {{ registrationForm.phone(class='form-control') }}
-                {% for error in registrationForm.phone.errors %}
-                    <div class="alert alert-danger">{{ error }}</div>
-                {% endfor  %}
-            </div>
-
-            <div class="form-group">
-              {{ registrationForm.description.label }}
-                {{ registrationForm.description(class='form-control') }}
-                {% for error in registrationForm.description.errors %}
-                    <div class="alert alert-danger">{{ error }}</div>
-                {% endfor  %}
-            </div>
-        <div id="success"></div>
-          <!-- For success/fail messages -->
-        {{ registrationForm.submit(class='btn btn-primary') }}
-            {{ registrationForm.hidden_tag() }}
         </div>
-    </form>
-</div>
+    </div>
 {% endblock %}

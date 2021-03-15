@@ -2,22 +2,24 @@
 
 {% block body %}
 
-    <div class="container-lg">
-        <div class="row row-cols-lg-2">
-            <div class="col mb-5">
-                <img src="/static/images/kimberly-fowler-_L0jF0tt2kE-unsplash.jpg" class="img-fluid rounded-3 w-100">
+    <div class="container-lg mt-3">
+        <div class="row row-cols-lg-2" id="searchBar">
+            <div class="col-lg mb-5">
+                <img src="/static/images/registration/kimberly-fowler-_L0jF0tt2kE-unsplash.jpg" class="img-fluid rounded-3 w-100">
             </div>
-            <div class="col text-center m-auto">
+            <div class="col-lg text-center m-auto">
                 <h2>Register as a Consumer</h2>
+                <p>Join Edesia to buy fresh and quality goods</p>
                 <a href="{{ url_for('registration', type_user='consumer') }}"class="btn btn-primary m-auto">Click Here</a>
             </div>
 
-            <div class="col text-center m-auto">
+            <div class="col-lg text-center m-auto">
                 <h2>Register as a Supplier</h2>
+                <p>Join our network of farmers to improva your business</p>
                 <a href="{{ url_for('registration', type_user='supplier') }}"class="btn btn-primary m-auto">Click Here</a>
             </div>
-             <div class="col mb-5">
-                <img src="/static/images/kimberly-fowler-_L0jF0tt2kE-unsplash.jpg" class="img-fluid rounded-3 w-100">
+             <div class="col-lg mb-5">
+                <img src="/static/images/registration/farmer-registration.jpg" class="img-fluid rounded-3 w-100">
             </div>
 
         </div>

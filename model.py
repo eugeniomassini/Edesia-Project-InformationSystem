@@ -50,7 +50,7 @@ class Consumer(db.Model):
 class Supplier (db.Model):
     id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     supplier_name = db.Column(db.String(50), nullable=False)
-    supplier_address = db.Column(db.String(50), nullable=False)
+    supplier_address = db.Column(db.String(100), nullable=False)
     supplier_city = db.Column(db.String(50))
     supplier_phone = db.Column(db.String(12), nullable=False)
     piva = db.Column(db.String(25), nullable=False)

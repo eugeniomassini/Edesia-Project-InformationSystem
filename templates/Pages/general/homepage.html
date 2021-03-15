@@ -12,7 +12,7 @@
                             <form method="post" id="research_form">
 
                                 <div class="input-group input-group-lg" id="searchBar">
-                                    {{ form.city(class = 'form-control border-2 rounded-2')}}
+                                    {{ form.city(class = 'form-control border-2 rounded-2', placeholder="Insert your city", id="autocomplete", onfocus="geolocate()")}}
                                     {% for error in form.city.errors %}
                                         <p>{{ error }}</p>
                                     {% endfor %}

@@ -2,6 +2,12 @@
     color: #0F7619;
 }
 
+#my_button .btn{
+    color: white;
+    background-color: #0F7619;
+    border-color: #0F7619;
+}
+
 #navbarItem a:hover{
     color: #78AE27;
 }
@@ -17,4 +23,15 @@
 
 #searchBar .btn{
     background-color: #0F7619;
+    border-color: #0F7619;
 }
+
+#form_error .btn{
+    background-color: #0F7619;
+    border-color: #0F7619;
+}
+
+#form_error p{
+    color: red;
+}
+

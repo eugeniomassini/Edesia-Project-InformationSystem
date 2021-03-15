@@ -11,6 +11,9 @@ from flask_mail import Mail, Message
 
 app = Flask(__name__)
 
+
+app.config['GMAPS_API']=os.environ.get('GMAPS_API')
+
 # Database configuration
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///website.db'
@@ -90,8 +93,8 @@ def setup_db():
 
     product1 = Product(supplier_id = 2,
                         name = 'Tomatoes',
-                        price = 3.00,
-                        quantity = 25.00,
+                        price = 3.01,
+                        quantity = 25.01,
                         description = None,
                         box = False)
     product2 = Product(supplier_id = 2,
@@ -155,6 +158,7 @@ def internal_server_error(e):
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/homepage', methods=['GET', 'POST'])
 def homepage():
+    session['GMAPS_API']=app.config['GMAPS_API']
     researchForm = ResearchForm()
     if researchForm.validate_on_submit():
         return redirect(url_for('research', city=researchForm.city.data))
@@ -229,10 +233,20 @@ def registration(type_user):
             db.session.add(user)
             db.session.commit()
             id_user = User.query.filter_by(email=registrationForm.email.data).first()
+            city = str(registrationForm.address.data)
+            address = city.split(',')
+            if any(str.isdigit(c) for c in address[1]):
+                to_remove = address[0] + ',' + address[1] + ', '
+            else:
+                to_remove = address[0] + ', '
+
+            city = city.replace(to_remove, '')
+            print city
             supplier = Supplier(id = id_user.id,
                                 supplier_name=registrationForm.name.data,
                                 piva=registrationForm.piva.data,
                                 supplier_address=registrationForm.address.data,
+                                supplier_city=city,
                                 supplier_phone=registrationForm.phone.data,
                                 description= registrationForm.description.data)
             db.session.add(supplier)
@@ -402,7 +416,7 @@ def supplier_edit_product(id, product_id):
 # 1 Step: Research
 @app.route('/research/<city>')
 def research(city):
-    suppliers = Supplier.query.filter_by(supplier_address=city).all()
+    suppliers = Supplier.query.filter_by(supplier_city=city).all()
     return render_template("Pages/research_result.html", suppliers=suppliers)
 
 # 2 Step: Display Farmer Store
@@ -487,7 +501,6 @@ def order_func(id):
         db.session.commit()
 
     return render_template('Pages/order_confirmation.html', bought=bought_l, amount=amount, supplier=supplier.supplier_name, order_id=order_id.id)
-
 
 if __name__ == '__main__':
     app.run(debug=True)
