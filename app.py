@@ -294,7 +294,28 @@ def consumer(id):
 
         l_order_cons.append(OrderCons(o, products))
 
-    return render_template('Pages/profile/profile_consumer.html', consumer=consumer, user=user, orders=l_order_cons)
+    return render_template('Pages/profile/profile_consumer-orders.html', consumer=consumer, user=user, orders=l_order_cons)
+
+@app.route('/consumer/<int:id>/review/order_id=<int:order_id>', methods=['GET', 'POST'])
+@login_required
+def consumer_review(id, order_id):
+    consumer = Consumer.query.filter_by(id=id).first()
+    user = User.query.filter_by(id=id).first()
+    order = Order.query.filter_by(id=order_id).first()
+
+    form = ReviewForm()
+
+    if form.validate_on_submit():
+        review = Review(order_id=order.id,
+                        consumer_id=id,
+                        supplier_id=order.supplier_id,
+                        text= form.text.data)
+        order.review=True
+        db.session.add(review)
+        db.session.commit()
+        return redirect(url_for('consumer', id=id))
+
+    return render_template('Pages/profile/profile_consumer-review.html', consumer=consumer, user=user, form=form, order=order)
 
 # Supplier page
 @app.route('/supplier/<int:id>/<page>', methods=['GET', 'POST'])
@@ -365,14 +386,15 @@ def research(city):
 def farmer_store(id):
     supplier = Supplier.query.filter_by(id=id).first()
     products = Product.query.filter(Product.supplier_id==id, Product.box==False, Product.quantity>0.0).all()
-    #products = Product.query.filter_by(supplier_id=id, box=False).all()
     boxes = Product.query.filter(Product.supplier_id==id, Product.box==True, Product.quantity>0.0).all()
     min_entries = len(products)+len(boxes)
     class LocalForm(OrderForm):pass
     LocalForm.order = FieldList(FormField(OrderEntryForm), min_entries=min_entries)
     form=LocalForm()
 
-    return render_template("Pages/farmer_store.html", supplier=supplier, products=products, boxes=boxes, form=form)
+    reviews = Review.query.filter_by(supplier_id=id).all()
+
+    return render_template("Pages/farmer_store.html", supplier=supplier, products=products, boxes=boxes, form=form, reviews=reviews)
 
 # 3 Step: Elaborate and Validate the order
 @app.route('/order/confirmation/<int:id>', methods=['POST'])

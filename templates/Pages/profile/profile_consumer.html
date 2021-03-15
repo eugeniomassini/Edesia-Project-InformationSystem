@@ -22,55 +22,9 @@
                 </div>
             </div>
 
-            <div class="col-8">
+        {% block specific %}
 
-                <div class="container-fluid m-1">
-                    <div class="row text-center">
-                        <h5>Your Order</h5>
-                    </div>
-
-                    {% if orders %}
-
-                    {% for order in orders %}
-                    <div class="row row-cols-lg-2 mb-3 mt-3">
-                        <div class="col">
-                             <h3>Order N: {{ order.order.id }}</h3>
-                            <p>Total: {{ order.order.amount }}€</p>
-                        </div>
-                    <div class="col">
-                        <a class="btn btn-primary">Leave a Review</a>
-                    </div>
-                    </div>
-
-                    <div class="table-responsive-lg">
-                        <table class="table table-hover">
-                            <thead class="table-light">
-                                <tr>
-                                    <th scope="col">Product</th>
-                                    <th scope="col">Quantity</th>
-                                    <th scope="col">Partial Amount</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {% for line in order.content %}
-                                <tr>
-                                    <th scope="row">{{ line.product_name }}</th>
-                                    <td>{{line.quantity}}</td>
-                                    <td>{{ line.partial_amount}}</td>
-                                </tr>
-                            {% endfor %}
-
-
-                            </tbody>
-
-                        </table>
-                    </div>
-                {% endfor %}
-                {% else %}
-                    <p>No orders found</p>
-                {% endif %}
-                </div>
-            </div>
+        {%  endblock %}
 
         </div>
     </div>

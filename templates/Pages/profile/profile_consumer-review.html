@@ -1,0 +1,22 @@
+{% extends 'Pages/profile/profile_consumer.html' %}
+
+{% block specific %}
+
+    <div class="col-lg-8">
+
+        <div class="row text-center">
+            <h5>{{ form.text.label }}</h5>
+            <p class="m-3">Order N: {{ order.id }}</p>
+        </div>
+
+        <form method="post">
+            {{ form.text(class="form-control", rows="5")}}
+            {% for error in form.text.errors %}
+                <p style="color: red">{{ error }}</p>
+            {% endfor %}
+            {{ form.submit(class="btn btn-primary mt-3") }}
+            {{ form.hidden_tag() }}
+        </form>
+    </div>
+
+{% endblock %}

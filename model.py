@@ -90,6 +90,7 @@ class Order (db.Model):
     date = db.Column(db.Date)
     amount = db.Column(db.Float)
     pickup = db.Column(db.Boolean)
+    review = db.Column(db.Boolean, default=False)
 
 class OrderLine(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -108,3 +109,11 @@ class AssistanceMessage(db.Model):
     surname = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), nullable=False)
     request = db.Column(db.Text, nullable=False)
+
+class Review (db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
+    consumer_id = db.Column(db.Integer, db.ForeignKey('consumer.id'))
+    supplier_id = db.Column(db.Integer, db.ForeignKey('supplier.id'))
+    text = db.Column(db.Text, nullable=False)
+    #timestamp = db.Column(db.DateTime, default=datetime.utcnow)

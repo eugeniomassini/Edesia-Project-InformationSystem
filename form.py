@@ -68,3 +68,7 @@ class ContactUsForm(FlaskForm):
     email = StringField('Email:', validators=[DataRequired(), Email()])
     message = TextAreaField('Message:', validators=[DataRequired(), Length(max=1000)])
     submit = SubmitField('Send Message')
+
+class ReviewForm(FlaskForm):
+    text = TextAreaField('Write here your review:', validators=[DataRequired(), Length(min=10, max=1000)])
+    submit = SubmitField('Send Review')

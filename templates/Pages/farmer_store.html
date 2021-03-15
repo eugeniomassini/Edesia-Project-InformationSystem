@@ -76,11 +76,27 @@
             {{ form.hidden_tag() }}
         </form>
 
-
-        <div class="container-fluid m-5">
-            <h2 class="text-center">Reviews</h2>
-        </div>
-
+        {% if reviews %}
+            <div class="container-fluid m-5 border-top">
+                    <h2 class="text-center mt-2">Reviews</h2>
+                    <div class="col-lg-8 m-auto">
+                        {% for review in reviews %}
+                             <div class="card m-4 rounded-3 border-3" id="cardResult">
+                                <div class="row">
+                                    <div class="col-lg">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                Order N: {{ review.order_id }}
+                                            </h5>
+                                            <p class="card-text">{{ review.text}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+        {% endif %}
     </div>
 
 
