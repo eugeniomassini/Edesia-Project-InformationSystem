@@ -86,10 +86,9 @@ class Order (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     consumer_id = db.Column(db.Integer, db.ForeignKey('consumer.id'))
     supplier_id = db.Column(db.Integer, db.ForeignKey('supplier.id'))
-    status = db.Column(db.String)
     date = db.Column(db.Date)
+    delivery_date = db.Column(db.Date)
     amount = db.Column(db.Float)
-    pickup = db.Column(db.Boolean)
     review = db.Column(db.Boolean, default=False)
 
 class OrderLine(db.Model):

@@ -72,3 +72,10 @@ class ContactUsForm(FlaskForm):
 class ReviewForm(FlaskForm):
     text = TextAreaField('Write here your review:', validators=[DataRequired(), Length(min=10, max=1000)])
     submit = SubmitField('Send Review')
+
+class EditProduct(FlaskForm):
+    name = StringField('Product Name', validators=[Length(min=3, max=25)])
+    quantity = FloatField('Quantity in kg')
+    price = FloatField('Price/kg')
+    description = TextAreaField('Description', validators=[Length(max=500)])
+    submit = SubmitField('Confirm Edit')

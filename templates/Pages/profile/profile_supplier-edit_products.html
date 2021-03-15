@@ -1,8 +1,8 @@
-{% extends 'Pages/profile/profile-supplier.html' %}
+{%  extends 'Pages/profile/profile-supplier.html' %}
 
 {% block specific %}
 
-                    <div class="row text-center">
+    <div class="row text-center">
                         <h5>Your Products</h5>
                         <div class="row row-cols-lg-2 m-auto p-3">
                             <div class="col">
@@ -20,13 +20,27 @@
                                 <div class="row">
                                     <div class="col-lg">
                                         <div class="card-body">
+                                            {% if product.id == product_id %}
+                                                <form method="post">
+                                                <h5 class="card-title">
+                                                    {{ form.name }}
+                                                </h5>
+                                                <p class="card-text">{{ form.description}}</p>
+                                                <p class="card-text">Price: {{ form.price }} €</p>
+                                                <p class="card-text">Quantity: {{ form.quantity }}</p>
+                                                {{ form.submit }}
+                                                {{ form.hidden_tag() }}
+                                                </form>
+
+                                            {% else %}
                                             <h5 class="card-title">
                                                 {{ product.name }}
                                             </h5>
                                             <p class="card-text">{{ product.description}}</p>
                                             <p class="card-text">Price: {{ product.price }} €</p>
                                             <p class="card-text">Quantity: {{ product.quantity }}</p>
-                                            <a class="btn btn-primary" href="{{ url_for('supplier_edit_product', id=user.id, product_id=product.id) }}">Edit</a>
+                                            <a class="btn btn-primary" href="">Edit</a>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -48,17 +62,33 @@
                             <tbody>
                             {% for product in products %}
                                 {% if product.box == False %}
-                                    <tr>
-                                        <th scope="row">{{ product.id }}</th>
-                                        <td>{{ product.name }}</td>
-                                        <td>{{ product.quantity }} Kg</td>
-                                        <td>{{ product.price }} €/kg</td>
-                                        <td><a class="btn btn-primary" type="button" href="{{ url_for('supplier_edit_product', id=user.id, product_id=product.id) }}">Edit</a></td>
-                                    </tr>
+                                    {% if product.id==product_id %}
+                                        <form method="post">
+                                            <tr>
+                                                <th scope="row">{{ product.id }}</th>
+                                                <td>{{ form.name }}</td>
+                                                <td>{{ form.quantity }} Kg</td>
+                                                <td>{{ form.price }} €/kg</td>
+                                                <td>{{ form.submit }}</td>
+                                                {{ form.hidden_tag() }}
+                                            </tr>
+                                        </form>
+
+                                    {% else %}
+                                        <tr>
+                                            <th scope="row">{{ product.id }}</th>
+                                            <td>{{ product.name }}</td>
+                                            <td>{{ product.quantity }} Kg</td>
+                                            <td>{{ product.price }} €/kg</td>
+                                            <td><button class="btn btn-primary" type="button">Edit</button></td>
+                                        </tr>
+                                    {% endif %}
+
                                 {% endif %}
                             {% endfor %}
                             </tbody>
                         </table>
                     </div>
+
 
 {% endblock %}

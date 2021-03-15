@@ -91,7 +91,7 @@ def setup_db():
     product1 = Product(supplier_id = 2,
                         name = 'Tomatoes',
                         price = 3.00,
-                        quantity = 0.00,
+                        quantity = 25.00,
                         description = None,
                         box = False)
     product2 = Product(supplier_id = 2,
@@ -370,6 +370,31 @@ def supplier(id, page):
             return redirect(url_for('supplier', id=user.id, page='products'))
         return render_template('Pages/profile/profile-supplier_addBox.html', supplier=supplier, user=user, form=form)
 
+@app.route('/supplier/<int:id>/edit-product=<int:product_id>', methods=['GET', 'POST'])
+@login_required
+def supplier_edit_product(id, product_id):
+    supplier = Supplier.query.filter_by(id=id).first()
+    user = User.query.filter_by(id=id).first()
+    product = Product.query.filter_by(id=product_id).first()
+    products = Product.query.filter_by(supplier_id=id).all()
+    form = EditProduct()
+
+    if form.validate_on_submit():
+        product.name = form.name.data
+        product.quantity = form.quantity.data
+        product.price = form.price.data
+        product.description = form.description.data
+
+        db.session.commit()
+        return redirect(url_for('supplier', id=id, page='products'))
+
+    form.name.data = product.name
+    form.quantity.data = product.quantity
+    form.price.data = product.price
+    form.description.data = product.description
+
+    return render_template('Pages/profile/profile_supplier-edit_products.html', supplier=supplier, user=user, form=form, products=products, product_id=product_id)
+
 
 # 3 Ordering process
 # Research, Farmer store, place order
@@ -427,7 +452,7 @@ def order_func(id):
                     bought_l.append(Bought(boxes[i], 1.0))
                     print order_dict[key]
                 elif to_order == key:
-                    if order_dict[quantity] < products[i].quantity:
+                    if float(order_dict[quantity]) > products[i].quantity:
                         flash(products[i].name)
                         return redirect(url_for('farmer_store', id=id))
                     amount = float(products[i].price) * float(order_dict[quantity]) + amount
