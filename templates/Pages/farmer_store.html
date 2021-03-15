@@ -2,7 +2,7 @@
 
 {% block body %}
 
-    <div class="container-lg">
+    <div class="container-lg mb-3">
 
         <div class="row row-cols-lg-2">
             <div class="col-lg">
@@ -13,13 +13,12 @@
                     <h2>{{ supplier.supplier_name }}</h2>
                     <p>{{ supplier.supplier_address }}</p>
                     <p style="text-align: justify">{{ supplier.description }}</p>
-                    <p>Rating</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="container-lg">
+    <div class="container-lg mt-3 border-top">
         <div class="container-fluid m-5">
             <h2 class="text-center">Box from the farmer</h2>
         </div>
@@ -32,17 +31,16 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ boxes[i].name }}</h5>
                                 <p class="card-text">{{ boxes[i].description }}</p>
-                                <p class="card-text fs-4">{{ boxes[i].price }}</p>
-                                 <td>{{ form.order[i].box }}</td>
+                                <p class="card-text fs-4">{{ boxes[i].price }} €</p>
+                                {{ form.order[i].box(class="form-check-input") }}
                             </div>
                         </div>
                     </div>
                 {% endfor %}
             </div>
 
-            <div class="container-fluid m-5">
-                <h2 class="text-center">List of Product</h2>
-            </div>
+            <div class="container-fluid m-auto border-top">
+                <h2 class="text-center m-5">List of Product</h2>
                 {% if get_flashed_messages() %}
                     <p style="color: red">Select the right quantities</p>
                 {% endif %}
@@ -63,17 +61,18 @@
                     {% for i in range(products|length) %}
                         <tr>
                             <td scope="row">{{ products[i].name }}</td>
-                            <td>{{ form.order[i].quantity }}</td>
+                            <td>{{ form.order[i].quantity(class="form-control") }}</td>
                             <td>{{ products[i].quantity }} Kg</td>
-                            <td>{{ products[i].price }}</td>
-                            <td>{{ form.order[i].to_order }}</td>
+                            <td>{{ products[i].price }} €/kg</td>
+                            <td class="m-auto">{{ form.order[i].to_order(class="form-check-input") }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
             </div>
-            {{ form.submit }}
+            {{ form.submit(class="btn btn-primary", style="background-color: #0F7619; border-color: #0F7619") }}
             {{ form.hidden_tag() }}
+            </div>
         </form>
 
         {% if reviews %}

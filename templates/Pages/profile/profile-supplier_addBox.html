@@ -1,0 +1,33 @@
+{% extends 'Pages/profile/profile-supplier.html' %}
+
+{% block specific %}
+
+    <h2>Add Box</h2>
+
+    <form method="post">
+        {{ form.name.label }}
+        {{ form.name(class='form-control')}}
+        {% for error in form.name.errors %}
+            <p>{{ error }}</p>
+        {% endfor %}
+        {{ form.quantity.label }}
+        {{ form.quantity(class='form-control')}}
+        {% for error in form.quantity.errors %}
+            <p>{{ error }}</p>
+        {% endfor %}
+        {{ form.price.label }}
+        {{ form.price(class='form-control')}}
+        {% for error in form.price.errors %}
+            <p>{{ error }}</p>
+        {% endfor %}
+        {{ form.description.label }}
+        {{ form.description(class='form-control', rows="3")}}
+        {% for error in form.description.errors %}
+            <p>{{ error }}</p>
+        {% endfor %}
+
+        {{ form.submit(class='btn btn-primary mt-3') }}
+        {{ form.hidden_tag() }}
+    </form>
+
+{% endblock %}

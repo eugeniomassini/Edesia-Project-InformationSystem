@@ -57,72 +57,102 @@ def setup_db():
     role_admin = Role(name='Admin')
     db.session.add_all([role_supplier, role_consumer, role_admin])
     db.session.commit()
-# Adding a User
-    newuser = User(name='Eugenio',
-                email='pippo@gmail.com',
-                password_hash=bcrypt.generate_password_hash('12345678'),
-                roleid=2
-                )
-    db.session.add(newuser)
-    db.session.commit()
-    newconsumer = Consumer(id=1,
-                           consumer_name='Eugenio',
-                           consumer_surname='Massini',
-                           consumer_address='Paperopoli',
+
+# Adding Users
+
+    users = [
+        {'name': "Eugenio", 'surname':"Massini"},
+        {'name': "Aleix", 'surname': "Carbonel"},
+        {'name': "Chiara", 'surname': "Nicolini"},
+        {'name': "Anna", 'surname': "Neirotti"},
+        {'name': "Valeria", 'surname': "Porzio"},
+        {'name': "Elisa", 'surname': "Vassallo"}
+    ]
+
+    for user in users:
+            mail = user['name'].lower()+user['surname'].lower()+'@mail.com'
+            user_db = User(name=user['name'],
+                        email=mail,
+                        password_hash=bcrypt.generate_password_hash('12345678'),
+                        roleid=2)
+            db.session.add(user_db)
+            db.session.commit()
+            user_id = User.query.order_by(User.id.desc()).first()
+            consumer = Consumer(id=user_id.id,
+                           consumer_name=user['name'],
+                           consumer_surname=user['surname'],
+                           consumer_address='Corso Duca degli Abruzzi, 24, Turin',
                            consumer_phone='3331234567')
-    db.session.add(newconsumer)
-    db.session.commit()
-    password1 = bcrypt.generate_password_hash('12345678').encode('utf-8')
-    user_info = User(name='Fruit & Vegetables',
-                     email='s289100@studenti.polito.it',
-                     password_hash=password1,
-                     roleid=1)
-    db.session.add(user_info)
-    db.session.commit()
-    user_info = User.query.filter_by(email='s289100@studenti.polito.it').first()
-    session['user_id'] = user_info.id
-    new_supplier = Supplier(id=user_info.id,
-                            supplier_name='Fruit & Vegetables',
-                            supplier_address='Torino',
-                            supplier_city='Torino',
+            db.session.add(consumer)
+            db.session.commit()
+
+#Add Suppliers
+
+    suppliers = [
+        {'name': "Eugenio", 'surname': "Massini"},
+        {'name': "Aleix", 'surname': "Carbonel"},
+        {'name': "Chiara", 'surname': "Nicolini"},
+        {'name': "Anna", 'surname': "Neirotti"},
+        {'name': "Valeria", 'surname': "Porzio"},
+        {'name': "Elisa", 'surname': "Vassallo"}
+    ]
+
+    for user in suppliers:
+        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+        name = user['name'] +' '+user['surname']+"'s farm"
+        mail = user['name'].lower() + user['surname'].lower() + 'farm@mail.com'
+        user_db = User(name=name,
+                       email=mail,
+                       password_hash=bcrypt.generate_password_hash('12345678'),
+                       roleid=1)
+        db.session.add(user_db)
+        db.session.commit()
+        user_id = User.query.order_by(User.id.desc()).first()
+        supplier = Supplier(id= user_id.id,
+                            supplier_name=name,
+                            supplier_address='Turin, Metropolitan City of Turin, Italy',
+                            supplier_city='Turin, Metropolitan City of Turin, Italy',
                             supplier_phone='0123456789',
                             piva='000000',
-                            description='Local & Fresh Food')
-    db.session.add(new_supplier)
-    db.session.commit()
+                            description=description)
+        db.session.add(supplier)
+        db.session.commit()
 
-    product1 = Product(supplier_id = 2,
-                        name = 'Tomatoes',
-                        price = 3.01,
-                        quantity = 25.01,
-                        description = None,
-                        box = False)
-    product2 = Product(supplier_id = 2,
-                        name = 'Potatoes',
-                        price = 3.00,
-                        quantity = 20.00,
-                        description = None,
-                        box = False)
-    product3 = Product(supplier_id=2,
-                       name='Beats',
-                       price=3.00,
-                       quantity=10.00,
-                       description=None,
-                       box=False)
-    box1 = Product(supplier_id = 2,
-                    name = 'Our Box',
-                    price = 3.00,
-                    quantity = 5.00,
-                    description = 'The Box Contains: -5kg of Carrots\n-3kg of beats',
-                    box = True)
-    box2 = Product(supplier_id=2,
-                   name='Our Box',
-                   price=3.00,
-                   quantity=5.00,
-                   description='The Box Contains: -5kg of Carrots\n-3kg of beats',
-                   box=True)
-    db.session.add_all([product1, product2, product3, box1, box2])
-    db.session.commit()
+
+#Add products
+
+    products = [
+        {'name': "Tomatoes", 'price': 5.00, 'quantity': 20.00},
+        {'name': "Potatoes", 'price': 3.00, 'quantity': 25.00},
+        {'name': "Beets", 'price': 4.00, 'quantity': 15.00},
+    ]
+
+    for product in products:
+        users = User.query.filter_by(roleid=1).all()
+        for user in users:
+            product_db = Product(supplier_id=user.id,
+                    name=product['name'],
+                    price=product['price'],
+                    quantity=product['quantity'],
+                    description=None,
+                    box=False)
+            db.session.add(product_db)
+            db.session.commit()
+
+
+    for i in range(2):
+        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        users = User.query.filter_by(roleid=1).all()
+        for user in users:
+            product_db = Product(supplier_id=user.id,
+                                 name='Special Box',
+                                 price=20.00,
+                                 quantity=4.00,
+                                 description=description,
+                                 box=True)
+            db.session.add(product_db)
+            db.session.commit()
+
 
     order1 = Order(consumer_id=1,
                    supplier_id=2,
@@ -291,13 +321,14 @@ def logout():
 def consumer(id):
     consumer = Consumer.query.filter_by(id=id).first()
     user = User.query.filter_by(id=id).first()
-    orders = Order.query.filter_by(consumer_id=id).all()
+    orders = Order.query.filter_by(consumer_id=id).order_by(Order.id.desc()).all()
     l_order_cons =[]
 
     class OrderCons():
         def __init__(self, order, content):
             self.order = order
             self.content = content
+
 
     for o in orders:
         products = []
@@ -377,7 +408,7 @@ def supplier(id, page):
                               price=form.price.data,
                               description=form.description.data,
                               name=form.name.data,
-                              quantity=form.quantity,
+                              quantity=form.quantity.data,
                               box=True)
             db.session.add(product)
             db.session.commit()

@@ -2,35 +2,38 @@
 
 {% block body %}
 
-    <div class="container-lg vh-100">
+    <div class="container-lg">
         <div class="row row-cols-lg-2">
             <!-- text for login -->
-            <div class="col m-auto">
+            <div class="col-lg-5 m-auto">
                 <h1>Enter in Edesia!</h1>
                 <p>Your new portal to buy groceries</p>
 
             </div>
             <!-- login form -->
-            <div class="col">
-                <div class="card">
+            <div class="col-lg-7">
+                <div class="card shadow">
+                    <img src="/static/images/login.jpg" class="card-img img-fluid">
                     <div class="card-body">
                        <h2 class="card-title">
                            Login
                        </h2>
-                        <form method="post">
+                        <form method="post" id="form_error">
+                        <div class="form-group m-2">
                             {{ form.email.label }}
                             {{ form.email(class = 'form-control') }}
                             {% for error in form.email.errors %}
                                 <p>{{ error }}</p>
                             {% endfor %}
-
+                        </div>
+                        <div class="form-group m-2">
                             {{ form.password.label }}
                             {{ form.password(class = 'form-control') }}
                             {% for error in form.password.errors %}
                                 <p>{{ error }}</p>
                             {% endfor %}
-
-                            {{ form.submit(class='btn btn-primary mt-3') }}
+                        </div>
+                            {{ form.submit(class='btn btn-primary m-2') }}
                             {{ form.hidden_tag() }}
                         </form>
                     </div>

@@ -4,41 +4,38 @@
 
 {% block body %}
 
-    <div class="container-fluid">
-        <div class="container-lg text-center m-5">
-            <h1>TODO Here The Map</h1>
-        </div>
-
+    <div class="container-fluid mt-3 mb-3">
         <div class="container-lg">
-            <div class="col-8 col-md m-auto">
-
+{#            <div class="row row-cols-lg-2 m-auto">#}
                 {% if suppliers %}
-                    {% for supplier in suppliers %}
-                    <div class="card m-4 rounded-3 border-3" id="cardResult">
-                        <div class="row">
-                            <div class="col-4 col-md-4">
-                                <img src="/static/images/hp_first.png" class="card-img">
-                            </div>
-                            <div class="col-8 col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">
-                                        {{ supplier.supplier_name }}
-                                    </h5>
-                                    <p class="card-text">{{ supplier.supplier_address }}</p>
-                                    <p class="card-text">{{ supplier.description}}</p>
-                                    <p class="card-text">Rating</p>
-                                    <a class="btn btn-primary" href="{{ url_for('farmer_store', id=supplier.id) }}">Open Store</a>
+
+                        <div class="col-lg-10 m-auto">
+                            {% for supplier in suppliers %}
+                            <div class="card mt-4 rounded-3 border-3" id="cardResult">
+                                <div class="row">
+                                   <img src="/static/images/farmer-card-research.jpg" class="card-img-top img-fluid">
+                                    <div class="col-lg-10 m-auto">
+                                        <div class="card-body" id="searchBar">
+                                            <h5 class="card-title">
+                                                {{ supplier.supplier_name }}
+                                            </h5>
+                                            <p class="card-text">{{ supplier.supplier_address }}</p>
+                                            <p class="card-text">{{ supplier.description}}</p>
+                                            <a class="btn btn-primary" href="{{ url_for('farmer_store', id=supplier.id) }}">Open Store</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            {% endfor %}
                         </div>
-                    </div>
-                    {% endfor %}
+
+
                 {% else %}
-                    <div class="row text-center">
+                    <div class="row text-center m-5">
                         <h2>No Results found</h2>
                     </div>
                 {% endif %}
-            </div>
+{#            </div>#}
         </div>
     </div>
 

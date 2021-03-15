@@ -4,8 +4,8 @@ from wtforms.validators import *
 from model import *
 
 class LoginForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[Length(min=8, max=16), DataRequired()])
+    email = StringField('Email:', validators=[DataRequired(), Email()])
+    password = PasswordField('Password:', validators=[Length(min=8, max=16), DataRequired()])
     submit = SubmitField('Login')
 
 # Registration form for the consumer
@@ -44,11 +44,11 @@ class ResearchForm(FlaskForm):
     submit = SubmitField('Search')
 
 class ProductForm(FlaskForm):
-    name = StringField('Product Name', validators=[DataRequired(), Length(min=3, max=25)])
-    quantity = FloatField('Quantity in kg', validators=[DataRequired()])
-    price = FloatField('Price/kg', validators=[DataRequired()])
-    description =TextAreaField('Description', validators=[Length(max=500)])
-    submit = SubmitField('Add Product')
+    name = StringField('Product Name:', validators=[DataRequired(), Length(min=3, max=25)])
+    quantity = FloatField('Quantity in kg:', validators=[DataRequired()])
+    price = FloatField('Price/kg:', validators=[DataRequired()])
+    description =TextAreaField('Description:', validators=[Length(max=500)])
+    submit = SubmitField('Submit')
 
 class OrderEntryForm(FlaskForm):
     name = StringField()

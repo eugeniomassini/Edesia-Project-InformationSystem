@@ -17,14 +17,14 @@
                         <p class="card-text">{{ supplier.piva }}</p>
 
                     </div>
-                    <div class="list-group list-group-flush m-3">
-                        <a class="list-group-item list-group-item-action" href="{{ url_for('supplier', id=supplier.id, page='orders')}}">Orders</a>
-                        <a class="list-group-item list-group-item-action" href="{{ url_for('supplier', id=supplier.id, page='products')}}">Products</a>
-
-                    </div>
-
-                    <div class="card-body m-3">
-                        <button class="btn btn-primary">Edit Profile</button>
+                    <div class="list-group list-group-flush m-3" id="mylist">
+                        {% if products %}
+                            <a class="list-group-item list-group-item-action" href="{{ url_for('supplier', id=supplier.id, page='orders')}}">Orders</a>
+                            <a class="list-group-item list-group-item-action active" href="{{ url_for('supplier', id=supplier.id, page='products')}}">Products</a>
+                        {% else %}
+                            <a class="list-group-item list-group-item-action active" href="{{ url_for('supplier', id=supplier.id, page='orders')}}">Orders</a>
+                            <a class="list-group-item list-group-item-action" href="{{ url_for('supplier', id=supplier.id, page='products')}}">Products</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
