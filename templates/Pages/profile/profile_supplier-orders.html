@@ -2,7 +2,7 @@
 
 {% block specific %}
                     <div class="row text-center">
-                        <h5>Your Order</h5>
+                        <h3>Your Order</h3>
                     </div>
 
                     {% if orders %}
@@ -11,7 +11,8 @@
 
                         <h3>Order N: {{ order.order.id }}</h3>
                         <p>Total: {{ order.order.amount }}€</p>
-                        <p>Address: {{ order.consumer.consumer_address}}</p>
+                        <p>Address: {{ order.consumer.consumer_address}}, To: {{ order.consumer.consumer_name }} {{ order.consumer.consumer_surnname }}</p>
+                        <p>To: {{ order.consumer.consumer_name }} {{ order.consumer.consumer_surname }}</p>
                         <p>Order Date: {{ order.order.date }}</p>
                         <p>Delivery Date: {{ order.order.delivery_date }}</p>
                     <div class="table-responsive-lg">

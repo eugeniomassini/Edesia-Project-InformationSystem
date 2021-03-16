@@ -5,7 +5,7 @@
 
                 <div class="container-fluid m-1">
                     <div class="row text-center">
-                        <h5>Your Order</h5>
+                        <h3>Your Order</h3>
                     </div>
 
                     {% if orders %}
@@ -17,6 +17,7 @@
                             <p>Total: {{ order.order.amount }}€</p>
                             <p>Order Date: {{ order.order.date }}</p>
                             <p>Delivery Date: {{ order.order.delivery_date }}</p>
+                            <p>From: {{ order.supplier.supplier_name }}</p>
                         </div>
                     <div class="col">
                         {% if  order.order.review == False %}
@@ -39,8 +40,8 @@
                             {% for line in order.content %}
                                 <tr>
                                     <th scope="row">{{ line.product_name }}</th>
-                                    <td>{{line.quantity}}</td>
-                                    <td>{{ line.partial_amount}}</td>
+                                    <td>{{line.quantity}} kg</td>
+                                    <td>{{ line.partial_amount}} €</td>
                                 </tr>
                             {% endfor %}
 

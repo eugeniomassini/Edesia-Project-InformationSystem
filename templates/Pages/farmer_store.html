@@ -76,13 +76,13 @@
         </form>
 
         {% if reviews %}
-            <div class="container-fluid m-5 border-top">
+            <div class="container-fluid mt-5 border-top">
                     <h2 class="text-center mt-2">Reviews</h2>
-                    <div class="col-lg-8 m-auto">
-                        {% for review in reviews %}
+            <div class="row row-cols-lg-2">
+                {% for review in reviews %}
+                    <div class="col-lg m-auto">
                              <div class="card m-4 rounded-3 border-3" id="cardResult">
-                                <div class="row">
-                                    <div class="col-lg">
+
                                         <div class="card-body">
                                             <h5 class="card-title">
                                                 Order N: {{ review.order_id }}
@@ -90,11 +90,12 @@
                                             <p class="font-monospace">{{ review.timestamp }}</p>
                                             <p class="card-text">{{ review.text}}</p>
                                         </div>
-                                    </div>
-                                </div>
+
                             </div>
-                        {% endfor %}
                     </div>
+                {% endfor %}
+            </div>
+
                 </div>
         {% endif %}
     </div>

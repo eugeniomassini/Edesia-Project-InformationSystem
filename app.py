@@ -156,23 +156,40 @@ def setup_db():
             db.session.add(product_db)
             db.session.commit()
 
+# Add Orders
+    consumers = Consumer.query.all()
+    suppliers = Supplier.query.all()
 
-    order1 = Order(consumer_id=1,
-                   supplier_id=7,
-                   amount=15.00,
-                   date=datetime.utcnow(),
-                   delivery_date=datetime.now() + timedelta(days=1)
-                   )
-    db.session.add(order1)
-    db.session.commit()
-    orderline1 = OrderLine(order_id=1,
-                           supplier_id=2,
-                           product_id=2,
-                           product_name='Beats',
-                           quantity=3.00,
-                           partial_amount=9.00)
-    db.session.add(orderline1)
-    db.session.commit()
+    for consumer in consumers:
+        for supplier in suppliers:
+            order = Order(consumer_id=consumer.id,
+                           supplier_id=supplier.id,
+                           amount=15.00,
+                           date=datetime.utcnow(),
+                           delivery_date=datetime.now() + timedelta(days=1)
+                           )
+            db.session.add(order)
+            db.session.commit()
+            order_id = Order.query.order_by(Order.id.desc()).first()
+            orderline = OrderLine(order_id=order_id.id,
+                                   supplier_id=supplier.id,
+                                   product_id=2,
+                                   product_name='Beats',
+                                   quantity=3.00,
+                                   partial_amount=9.00)
+            db.session.add(orderline)
+            db.session.commit()
+
+    orders = Order.query.all()
+    for order in orders:
+        review = Review(order_id=order.id,
+                        consumer_id=order.consumer_id,
+                        supplier_id=order.supplier_id,
+                        text='Everything was good')
+        order.review = True
+        db.session.add(review)
+        db.session.commit()
+
 
 
 # Program starts here
@@ -331,19 +348,21 @@ def consumer(id):
     l_order_cons =[]
 
     class OrderCons():
-        def __init__(self, order, content):
+        def __init__(self, order, content, supplier):
             self.order = order
             self.content = content
+            self.supplier = supplier
 
 
     for o in orders:
         products = []
-        lines = OrderLine.query.filter_by(order_id=o.id)
+        lines = OrderLine.query.filter_by(order_id=o.id).all()
+        supplier = Supplier.query.filter_by(id=o.supplier_id).first()
 
         for l in lines:
             products.append(l)
 
-        l_order_cons.append(OrderCons(o, products))
+        l_order_cons.append(OrderCons(o, products, supplier))
 
     return render_template('Pages/profile/profile_consumer-orders.html', consumer=consumer, user=user, orders=l_order_cons)
 
