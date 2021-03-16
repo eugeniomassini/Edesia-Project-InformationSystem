@@ -11,7 +11,9 @@
 
                         <h3>Order N: {{ order.order.id }}</h3>
                         <p>Total: {{ order.order.amount }}€</p>
-
+                        <p>Address: {{ order.consumer.consumer_address}}</p>
+                        <p>Order Date: {{ order.order.date }}</p>
+                        <p>Delivery Date: {{ order.order.delivery_date }}</p>
                     <div class="table-responsive-lg">
                         <table class="table table-hover">
                             <thead class="table-light">

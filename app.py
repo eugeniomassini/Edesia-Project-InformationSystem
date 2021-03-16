@@ -1,4 +1,6 @@
 # TODO import things I'll need
+from datetime import timedelta
+
 from flask import Flask, render_template, session, redirect, url_for, flash, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, current_user, logout_user
@@ -8,6 +10,7 @@ from wtforms.validators import *
 from flask_bcrypt import Bcrypt
 import os
 from flask_mail import Mail, Message
+from flask_moment import Moment
 
 app = Flask(__name__)
 
@@ -155,8 +158,11 @@ def setup_db():
 
 
     order1 = Order(consumer_id=1,
-                   supplier_id=2,
-                   amount=15.00)
+                   supplier_id=7,
+                   amount=15.00,
+                   date=datetime.utcnow(),
+                   delivery_date=datetime.now() + timedelta(days=1)
+                   )
     db.session.add(order1)
     db.session.commit()
     orderline1 = OrderLine(order_id=1,
@@ -372,19 +378,22 @@ def supplier(id, page):
         orders = Order.query.filter_by(supplier_id=id).all()
         l_order_cons = []
 
+
         class OrderCons():
-            def __init__(self, order, content):
+            def __init__(self, order, content, consumer):
                 self.order = order
                 self.content = content
+                self.consumer = consumer
 
         for o in orders:
             products = []
-            lines = OrderLine.query.filter_by(order_id=o.id)
+            lines = OrderLine.query.filter_by(order_id=o.id).all()
+            consumer = Consumer.query.filter_by(id=o.consumer_id).first()
 
             for l in lines:
                 products.append(l)
 
-            l_order_cons.append(OrderCons(o, products))
+            l_order_cons.append(OrderCons(o, products, consumer))
         return render_template('Pages/profile/profile_supplier-orders.html', supplier=supplier, user=user, orders=l_order_cons)
     elif page == "products":
         products = Product.query.filter_by(supplier_id=id).all()
@@ -515,7 +524,9 @@ def order_func(id):
 
     order_db = Order(consumer_id=session['id'],
                      supplier_id=id,
-                     amount=amount)
+                     amount=amount,
+                     date= datetime.utcnow(),
+                     delivery_date=datetime.now() + timedelta(days=1))
     db.session.add(order_db)
     db.session.commit()
 
