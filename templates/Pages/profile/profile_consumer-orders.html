@@ -13,8 +13,10 @@
                     {% for order in orders %}
                     <div class="row row-cols-lg-2 mb-3 mt-3">
                         <div class="col">
-                             <h3>Order N: {{ order.order.id }}</h3>
+                            <h3>Order N: {{ order.order.id }}</h3>
                             <p>Total: {{ order.order.amount }}€</p>
+                            <p>Order Date: {{ order.order.date }}</p>
+                            <p>Delivery Date: {{ order.order.delivery_date }}</p>
                         </div>
                     <div class="col">
                         {% if  order.order.review == False %}

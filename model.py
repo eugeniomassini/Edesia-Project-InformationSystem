@@ -115,4 +115,4 @@ class Review (db.Model):
     consumer_id = db.Column(db.Integer, db.ForeignKey('consumer.id'))
     supplier_id = db.Column(db.Integer, db.ForeignKey('supplier.id'))
     text = db.Column(db.Text, nullable=False)
-    #timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    timestamp = db.Column(db.Date, default=datetime.utcnow)
