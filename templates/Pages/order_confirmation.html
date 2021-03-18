@@ -13,10 +13,10 @@
                 <div class="card-text">
                     {% for product in bought %}
                         <h4>{{ product.product.name }}</h4>
-                        <p>Quantity: {{ product.quantity }}</p>
+                        <p>Quantity: {{ product.quantity }} kg</p>
                     {% endfor %}
                 </div>
-                <h5>Total: {{ amount }}</h5>
+                <h5>Total: {{ amount }} €</h5>
             </div>
         </div>
     </div>

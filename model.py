@@ -39,7 +39,7 @@ class Consumer(db.Model):
     id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     consumer_name = db.Column(db.String(50), nullable=False)
     consumer_surname = db.Column(db.String(50), nullable=False)
-    consumer_address = db.Column(db.String(50), nullable=False)
+    consumer_address = db.Column(db.String(100), nullable=False)
     consumer_phone = db.Column(db.String(12), nullable=False)
 
     __mapper_args__ = {
@@ -109,6 +109,7 @@ class AssistanceMessage(db.Model):
     email = db.Column(db.String(50), nullable=False)
     request = db.Column(db.Text, nullable=False)
 
+# 5 Reviews
 class Review (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
